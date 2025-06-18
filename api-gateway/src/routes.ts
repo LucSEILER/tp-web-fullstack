@@ -21,7 +21,7 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://localhost:6000',
+      target: 'http://localhost:7000',
       changeOrigin: true,
     },
   },
