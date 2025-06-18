@@ -8,4 +8,12 @@ const getUsers = () => {
   return users
 }
 
-export default { getUsers }
+const findUserByEmail = (email: string) => {
+  const users = getUsers()
+
+  if (!users) return null
+
+  return users.find((user: any) => user.email === email)
+}
+
+export default { getUsers, findUserByEmail }
