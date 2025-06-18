@@ -1,0 +1,49 @@
+services:
+  app: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user_service
+    restart: always
+    ports:
+      - "7000:7000"
+    networks:
+      - my-network
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "5500:5500"
+    environment:
+      POSTGRES_USER: Us3rn4me
+      POSTGRES_PASSWORD: Passw0rd
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - my-network
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: email@email.com
+      PGADMIN_DEFAULT_PASSWORD: Passw0rd
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - my-network
+    depends_on:
+      - db
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks: 
+  my-network:
+    driver: bridge
