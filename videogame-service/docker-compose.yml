@@ -1,0 +1,50 @@
+services:
+  app: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: videogame_service
+    restart: always
+    # ports:
+    #   - "7000:7000"
+    networks:
+      - my-network
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: videogame_pgdb
+    restart: always
+    ports:
+      - "7500:7500"
+    environment:
+      POSTGRES_USER: Us3rn4me
+      POSTGRES_PASSWORD: Passw0rd
+    volumes:
+      - videogame_pgdata:/var/lib/postgresql/data
+    networks:
+      - my-network
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: videogame_pgadmin
+    restart: unless-stopped
+    ports:
+      - "7080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: email@email.com
+      PGADMIN_DEFAULT_PASSWORD: Passw0rd
+    volumes:
+      - videogame_pgadmin-data:/var/lib/pgadmin
+    networks:
+      - my-network
+    depends_on:
+      - db
+
+volumes:
+  videogame_pgdata:
+  videogame_pgadmin-data:
+
+networks: 
+  my-network:
+    driver: bridge
+    external: true # to use an external network. Need to create the network first with a command

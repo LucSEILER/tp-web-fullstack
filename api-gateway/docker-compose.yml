@@ -1,0 +1,16 @@
+services:
+  api_gateway: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    restart: always
+    ports:
+      - "4000:4000"
+    networks:
+      - my-network
+
+networks: 
+  my-network:
+    driver: bridge
+    external: true # to use an external network. Need to create the network first with a command
