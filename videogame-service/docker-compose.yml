@@ -6,7 +6,7 @@ services:
     container_name: videogame_service
     restart: always
     # ports:
-    #   - "9000:9000"
+    #   - "7000:7000"
     networks:
       - my-network
     depends_on:
@@ -16,7 +16,7 @@ services:
     container_name: videogame_pgdb
     restart: always
     ports:
-      - "9500:9500"
+      - "7500:7500"
     environment:
       POSTGRES_USER: Us3rn4me
       POSTGRES_PASSWORD: Passw0rd
@@ -29,7 +29,7 @@ services:
     container_name: videogame_pgadmin
     restart: unless-stopped
     ports:
-      - "9080:80"
+      - "7080:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: email@email.com
       PGADMIN_DEFAULT_PASSWORD: Passw0rd

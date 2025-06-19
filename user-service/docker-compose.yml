@@ -6,7 +6,7 @@ services:
     container_name: user_service
     restart: always
     # ports:
-    #   - "7000:7000"
+    #   - "5000:5000"
     networks:
       - my-network
     depends_on:
@@ -29,7 +29,7 @@ services:
     container_name: user_pgadmin
     restart: unless-stopped
     ports:
-      - "8888:80"
+      - "5080:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: email@email.com
       PGADMIN_DEFAULT_PASSWORD: Passw0rd

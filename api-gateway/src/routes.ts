@@ -21,7 +21,7 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://user_service:7000',
+      target: 'http://user_service:5000',
       changeOrigin: true,
     },
   },
@@ -30,7 +30,7 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://videogame_service:9000',
+      target: 'http://videogame_service:7000',
       changeOrigin: true,
     },
   },

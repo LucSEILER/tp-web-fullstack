@@ -5,7 +5,7 @@ import { setupLogging } from './logging'
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT ||9000
+const port = process.env.PORT || 7000
 
 setupLogging(app)
 
