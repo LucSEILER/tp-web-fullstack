@@ -21,7 +21,16 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://localhost:7000',
+      target: 'http://user_service:7000',
+      changeOrigin: true,
+    },
+  },
+  {
+    url: '/videogame',
+    auth: false,
+    creditCheck: false,
+    proxy: {
+      target: 'http://videogame_service:9000',
       changeOrigin: true,
     },
   },
