@@ -1,5 +1,5 @@
 services:
-  app: 
+  user_service: 
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
     # ports:
     #   - "5000:5000"
     networks:
-      - my-network
+      - gameradar-network
     depends_on:
       - db
   db:
@@ -23,7 +23,7 @@ services:
     volumes:
       - user_pgdata:/var/lib/postgresql/data
     networks:
-      - my-network
+      - gameradar-network
   pgadmin:
     image: dpage/pgadmin4
     container_name: user_pgadmin
@@ -36,7 +36,7 @@ services:
     volumes:
       - user_pgadmin-data:/var/lib/pgadmin
     networks:
-      - my-network
+      - gameradar-network
     depends_on:
       - db
 
@@ -45,6 +45,6 @@ volumes:
   user_pgadmin-data:
 
 networks: 
-  my-network:
+  gameradar-network:
     driver: bridge
     external: true # to use an external network
