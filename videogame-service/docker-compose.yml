@@ -1,5 +1,5 @@
 services:
-  app: 
+  videogame_service: 
     build:
       context: .
       dockerfile: Dockerfile

@@ -1,5 +1,5 @@
 services:
-  app: 
+  user_service: 
     build:
       context: .
       dockerfile: Dockerfile

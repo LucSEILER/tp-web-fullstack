@@ -7,7 +7,7 @@ import { authRoutes } from './routes/auth'
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT || 5000
+const port = process.env.PORT ? parseInt(process.env.PORT) : 5000
 
 setupLogging(app)
 
@@ -20,6 +20,6 @@ app.get('/', (req: any, res: any) => {
 app.use('/users', userRoutes)
 app.use('/auth', authRoutes)
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`API Gateway is running at http://localhost:${port}`)
 })
