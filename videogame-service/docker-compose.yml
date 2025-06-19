@@ -5,10 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: videogame_service
     restart: always
-    # ports:
-    #   - "7000:7000"
     networks:
-      - my-network
+      - gameradar-network
     depends_on:
       - db
   db:
@@ -23,7 +21,7 @@ services:
     volumes:
       - videogame_pgdata:/var/lib/postgresql/data
     networks:
-      - my-network
+      - gameradar-network
   pgadmin:
     image: dpage/pgadmin4
     container_name: videogame_pgadmin
@@ -36,7 +34,7 @@ services:
     volumes:
       - videogame_pgadmin-data:/var/lib/pgadmin
     networks:
-      - my-network
+      - gameradar-network
     depends_on:
       - db
 
@@ -45,6 +43,6 @@ volumes:
   videogame_pgadmin-data:
 
 networks: 
-  my-network:
+  gameradar-network:
     driver: bridge
     external: true # to use an external network. Need to create the network first with a command

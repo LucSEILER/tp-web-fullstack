@@ -8,9 +8,9 @@ services:
     ports:
       - "4000:4000"
     networks:
-      - my-network
+      - gameradar-network
 
 networks: 
-  my-network:
+  gameradar-network:
     driver: bridge
     external: true # to use an external network. Need to create the network first with a command
