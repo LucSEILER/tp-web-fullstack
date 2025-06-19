@@ -64,13 +64,14 @@ Please be sure to have the following packages installed :
 
 When you are in the root directory, execute sur following script
 
-Depuis la racine du projet, il suffit d'exécuter le script suivant :
 
 ```bash
 start.bat
 ```
 
 Then you can access the API Gateway with the port [4000](http//localhost:4000).
+
+You have to access to **/auth** to access the user-service, and **/videogame** to access the videogame-service.
 
 ### Step 3 (If network problem)
 
