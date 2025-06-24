@@ -14,7 +14,7 @@ services:
     container_name: videogame_pgdb
     restart: always
     ports:
-      - "7500:7500"
+      - "7500:5432"
     environment:
       POSTGRES_USER: Us3rn4me
       POSTGRES_PASSWORD: Passw0rd

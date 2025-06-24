@@ -3,36 +3,34 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: user_service
+    container_name: ${USER_SERVICE_NAME}
     restart: always
-    # ports:
-    #   - "5000:5000"
     networks:
       - gameradar-network
     depends_on:
       - db
   db:
     image: postgres
-    container_name: user_pgdb
+    container_name: ${USER_DB_CONTAINER_NAME}
     restart: always
     ports:
-      - "5500:5500"
+      - "5500:5432"
     environment:
-      POSTGRES_USER: Us3rn4me
-      POSTGRES_PASSWORD: Passw0rd
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - user_pgdata:/var/lib/postgresql/data
     networks:
       - gameradar-network
   pgadmin:
     image: dpage/pgadmin4
-    container_name: user_pgadmin
+    container_name: ${USER_PGADMIN_NAME}
     restart: unless-stopped
     ports:
       - "5080:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: email@email.com
-      PGADMIN_DEFAULT_PASSWORD: Passw0rd
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     volumes:
       - user_pgadmin-data:/var/lib/pgadmin
     networks:
@@ -48,3 +46,5 @@ networks:
   gameradar-network:
     driver: bridge
     external: true # to use an external network
+
+# ${DB_USERNAME}
