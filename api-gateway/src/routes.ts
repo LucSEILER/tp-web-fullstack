@@ -17,7 +17,7 @@ interface Route {
 
 const ROUTES: Route[] = [
   {
-    url: '/auth',
+    url: '/users',
     auth: false,
     creditCheck: false,
     proxy: {

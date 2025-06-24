@@ -23,6 +23,16 @@ const getUserById = async (id: string): Promise<User | null> => {
   }
 }
 
+const getUserByEmail = async (email: string): Promise<User | null> => {
+  try {
+    const result = await db.query('SELECT id, name, email, password FROM users WHERE email = $1', [email])
+    return result.rows[0]
+  } catch (error) {
+    console.error('Error fetching user:', error)
+    return null
+  }
+}
+
 export const createUser = async (user: UserCreate): Promise<User> => {
   try {
     await checkIfUserExists(user.email, user.name)
@@ -70,4 +80,4 @@ const deleteUserById = async (id: string): Promise<void> => {
   }
 }
 
-export default { getUsers, getUserById, createUser, deleteUserById }
+export default { getUsers, getUserById, getUserByEmail, createUser, deleteUserById }

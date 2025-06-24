@@ -12,7 +12,13 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 4000
 app.use(cors())
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.send({ message: 'Welcome to api-gateway' })
+  res.send({
+    message: 'Welcome to api-gateway',
+    service_routes: {
+      user_service: '/users',
+      videogame_service: '/videogame',
+    },
+  })
 })
 
 setupProxies(app, ROUTES)
