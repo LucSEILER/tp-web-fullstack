@@ -10,39 +10,48 @@ const getUsers = async (req: Request, res: Response) => {
   }
 }
 
-// function read(req: Request, res: Response) {
-//   const artistId = req.params.id
-//   const artist = artistService.find(artistId)
-//   if (artist) res.status(200).json(artist)
-//   else res.status(404).json({ message: 'Artiste non trouvé' })
-// }
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id
+    const user = await userService.getUserById(userId)
+    if (user) {
+      res.status(200).json(user)
+    } else {
+      res.status(404).json({ message: 'User not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
 
-// function create(req: Request, res: Response) {
-//   const datas = req.body
-//   const createdArtist = artistService.create(datas)
-//   if (createdArtist) res.status(201).json({ message: 'Artiste créé' })
-//   else res.status(400).json({ message: "Erreur lors de l'insertion" })
-// }
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const { name, email, password } = req.body
+    if (!name || !email || !password) {
+      res.status(400).json({ message: 'Name, email and password are required' })
+      return
+    }
 
-// function update(req: Request, res: Response) {
-//   const artistId = req.params.id
-//   const datas = req.body
-//   const updatedArtist = artistService.update(artistId, datas)
-//   if (updatedArtist) {
-//     res.status(200).json({ message: 'Artiste édité' })
-//   } else {
-//     res.status(400).json({ message: "Erreur lors de l'édition" })
-//   }
-// }
+    const user = await userService.createUser({ name, email, password })
+    res.status(201).json(user)
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message })
+  }
+}
 
-// function remove(req: Request, res: Response) {
-//   const artistId = req.params.id
-//   const removedArtist = artistService.remove(artistId)
-//   if (removedArtist) {
-//     res.status(200).json({ message: 'Artiste supprimé' })
-//   } else {
-//     res.status(400).json({ message: 'Erreur lors de la suppression' })
-//   }
-// }
+const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id
+    const user = await userService.getUserById(userId)
+    if (user) {
+      await userService.deleteUserById(userId)
+      res.status(200).json({ message: 'User deleted successfully' })
+    } else {
+      res.status(404).json({ message: 'User not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
 
-export default { getUsers }
+export default { getUsers, getUserById, createUser, deleteUserById }
