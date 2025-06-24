@@ -18,7 +18,7 @@ app.get('/', (req: any, res: any) => {
 })
 
 app.use('/users', userRoutes)
-app.use('/auth', authRoutes)
+// app.use('/auth', authRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`API Gateway is running at http://localhost:${port}`)

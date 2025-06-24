@@ -16,7 +16,7 @@ services:
     container_name: user_pgdb
     restart: always
     ports:
-      - "5500:5500"
+      - "5500:5432"
     environment:
       POSTGRES_USER: Us3rn4me
       POSTGRES_PASSWORD: Passw0rd

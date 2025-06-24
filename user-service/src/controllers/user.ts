@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import userService from '../services/user'
 
-const getUsers = (req: Request, res: Response) => {
+const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = userService.getUsers()
+    const users = await userService.getUsers()
     res.status(200).json(users)
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' })
