@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import express, { Express } from 'express'
 import { setupLogging } from './logging'
-import videogameService from './services/videogame'
+import { videogameRoutes } from './routes/videogame'
 
 dotenv.config()
 
@@ -12,18 +12,11 @@ setupLogging(app)
 
 app.use(express.json())
 
-app.get('/', (req: any, res: any) => {
-  res.send({ message: 'Welcome to videogame-service' })
-})
+// app.get('/', (req: any, res: any) => {
+//   res.send({ message: 'Welcome to videogame-service' })
+// })
 
-app.get('/games', (req: any, res: any) => {
-  try {
-    const games = videogameService.fetchGames()
-    res.status(200).json(games)
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' })
-  }
-})
+app.use('/', videogameRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`API Gateway is running at http://localhost:${port}`)

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
+import GameSimple from '../models/game'
 
 dotenv.config()
 
@@ -13,13 +14,11 @@ async function getAccessToken() {
     console.log('🔐 Getting new Twitch access token...')
     const res = await axios.post('https://id.twitch.tv/oauth2/token', null, {
       params: {
-        client_id: 'iicgs6aeuprldy6yujk3erd51fkux7',
-        client_secret: 'z2t3hpw6nczn44z013yvq1hydipvne',
+        client_id: process.env.TWITCH_CLIENT_ID,
+        client_secret: process.env.TWITCH_CLIENT_SECRET,
         grant_type: 'client_credentials',
       },
     })
-
-    console.log(res.data)
 
     accessToken = res.data.access_token
     tokenExpiration = now + (res.data.expires_in - 60) * 1000
@@ -28,7 +27,7 @@ async function getAccessToken() {
   return accessToken
 }
 
-async function fetchGames(limit = 10) {
+const getGames = async (limit: number = 10): Promise<GameSimple[]> => {
   const token = await getAccessToken()
 
   const response = await axios.post(
@@ -42,18 +41,7 @@ async function fetchGames(limit = 10) {
     }
   )
 
-  return response.data.map((game: any) => ({
-    name: game.name,
-    description: game.summary,
-    image: game.cover?.url
-      ? game.cover.url.replace('t_thumb', 't_cover_big')
-      : null,
-    rating: game.rating,
-    release_date: game.first_release_date
-      ? new Date(game.first_release_date * 1000).toLocaleDateString()
-      : null,
-    genres: game.genres?.map((g: any) => g.name) || [],
-  }))
+  return response.data
 }
 
-export default { fetchGames }
+export default { getGames }
