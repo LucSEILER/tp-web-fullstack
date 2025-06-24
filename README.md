@@ -48,7 +48,7 @@ user-service/
 
 ---
 
-## 🚀 Before to start
+## 🚀 Starting the project
 
 ### Step 1 - Requirements
 
@@ -62,8 +62,7 @@ Please be sure to have the following packages installed :
 
 ### Step 2 - How to start
 
-When you are in the root directory, execute sur following script
-
+When you are in the root directory, execute the following script
 
 ```bash
 start.bat
