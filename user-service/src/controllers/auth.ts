@@ -14,9 +14,7 @@ const login = async (req: Request, res: Response) => {
 
     res.cookie('idToken', token, { httpOnly: true })
 
-    res
-      .status(200)
-      .json({ message: 'Login successful', data: token, user: { email } })
+    res.status(200).json({ message: 'Login successful', data: token })
   } catch (error: any) {
     res
       .status(500)
