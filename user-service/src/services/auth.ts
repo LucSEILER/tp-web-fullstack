@@ -1,13 +1,16 @@
 import jwt from 'jsonwebtoken'
 import userService from './user'
 import { comparePassword } from '../utils/bcrypt'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const login = async (email: string, password: string) => {
   const user = await userService.getUserByEmail(email)
   if (user) {
     const isPasswordValid = await comparePassword(password, user.password)
     if (isPasswordValid) {
-      const token = jwt.sign({ name: user.name, id: user.id, email: user.email }, 'secret', {
+      const token = jwt.sign({ name: user.name, id: user.id, email: user.email }, process.env.JWT_SECRET || '', {
         expiresIn: '1h',
       })
       return token
