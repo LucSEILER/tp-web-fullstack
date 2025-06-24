@@ -6,7 +6,7 @@ services:
     container_name: api_gateway
     restart: always
     ports:
-      - "4000:4000"
+      - "${API_GATEWAY_HOST_PORT}:${API_GATEWAY_CONTAINER_PORT}"
     networks:
       - gameradar-network
 
