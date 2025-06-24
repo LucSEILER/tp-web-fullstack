@@ -31,7 +31,7 @@ const getGames = async (limit: number = 10): Promise<GameSimple[]> => {
   const token = await getAccessToken()
 
   const response = await axios.post(
-    'https://api.igdb.com/v4/games',
+    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
     `fields name, summary, cover.url, first_release_date, genres.name, rating; limit ${limit};`,
     {
       headers: {
@@ -44,4 +44,45 @@ const getGames = async (limit: number = 10): Promise<GameSimple[]> => {
   return response.data
 }
 
-export default { getGames }
+const getGameById = async (id: number): Promise<GameSimple | null> => {
+  const token = await getAccessToken()
+
+  const response = await axios.post(
+    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
+    `fields name, summary, cover.url, first_release_date, genres.name, rating; where id = ${id};`,
+    {
+      headers: {
+        'Client-ID': process.env.TWITCH_CLIENT_ID,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  return response.data.length > 0 ? response.data[0] : null
+}
+
+const searchGamesByName = async (
+  name: string,
+  limit: number = 10
+): Promise<GameSimple[]> => {
+  const token = await getAccessToken()
+
+  const response = await axios.post(
+    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
+    `
+    search "${name}";
+    fields name, summary, cover.url, first_release_date, genres.name, rating;
+    limit ${limit};
+    `,
+    {
+      headers: {
+        'Client-ID': process.env.TWITCH_CLIENT_ID,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  return response.data
+}
+
+export default { getGames, getGameById, searchGamesByName }
