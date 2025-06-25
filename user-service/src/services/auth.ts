@@ -7,14 +7,10 @@ dotenv.config()
 
 const login = async (email: string, password: string) => {
   const user = await userService.getUserByEmail(email)
-  if (!user) {
-    throw new Error('User not found')
-  }
+  if (!user) return null
 
   const isPasswordValid = await comparePassword(password, user.password)
-  if (!isPasswordValid) {
-    throw new Error('Invalid password')
-  }
+  if (!isPasswordValid) return null
 
   const token = jwt.sign(
     { name: user.name, id: user.id, email: user.email },

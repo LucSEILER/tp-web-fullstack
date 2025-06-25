@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import express, { Express } from 'express'
+import express, { Express, Request, Response, NextFunction } from 'express'
 import { setupLogging } from './logging'
 import { userRoutes } from './routes/user'
 import { authRoutes } from './routes/auth'
@@ -20,6 +20,11 @@ app.use(express.json())
 const swaggerDocument = YAML.load('./src/docs/swagger.yml')
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+
+app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
 
 app.use('/', userRoutes)
 app.use('/auth', authRoutes)
