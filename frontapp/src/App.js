@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
+<<<<<<< HEAD
     // <div className="App bg-primary h-screen flex flex-col">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
@@ -28,6 +29,25 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
       </Routes>
     </Router>
+=======
+    <div className="App bg-primary h-screen flex flex-col">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+        <LoginForm />
+      </header>
+    </div>
+>>>>>>> 067729b (feat: Install and config Tailwind CSS; Create first button component)
   );
 }
 
