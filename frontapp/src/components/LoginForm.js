@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import Cookies from "js-cookie";
-// import Button from "./atoms/Button";
 import Input from "./atoms/Input";
-
-// import Button from "./atoms/Button";
 import { Button } from "@chakra-ui/react";
-import api from "../config/api";
+import api from "../helpers/request";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -14,39 +10,35 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:4000/users/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        setError(result.message || "Login failed");
-        return;
-      }
-
-      localStorage.setItem("idToken", result.data.token);
-
-      console.log("Login successful");
-      window.location.href = "/";
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("Something went wrong");
+      api
+        .post("http://localhost:4000/users/auth/login", {
+          email,
+          password,
+        })
+        .then((response) => {
+          const responseData = response.data.data;
+          console.log("Response data: ", responseData);
+          const token = responseData.token;
+          const user = responseData.user;
+          console.log("Login successfull, user: ", user);
+          localStorage.setItem("idToken", token);
+        }).catch((error) => {
+          setError(error.response.data.message);
+        });
+    } catch (error) {
+      setError(error.message);
     }
   };
 
   const fetchUsers = async () => {
-    const response = await api.get("http://localhost:4000/users");
-    console.log(response)
-    // const data = await response.json();
-    // console.log(data)
-    // setUsers(data);
+    try {
+      const response = await api.get("http://localhost:4000/users");
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setError("Failed to fetch users");
+    }
   };
 
   return (
