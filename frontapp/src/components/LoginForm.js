@@ -26,16 +26,14 @@ const LoginForm = () => {
         return;
       }
 
-      // Enregistrer le token JWT dans les cookies
       Cookies.set("idToken", result.data.token, {
-        expires: 1, // 1 jour
-        secure: true, // activé uniquement en HTTPS
-        sameSite: "Strict", // protection CSRF
+        expires: 1,
+        secure: true,
+        sameSite: "Strict",
       });
 
-      // Redirection ou autre action
       console.log("Login successful");
-      window.location.href = "/dashboard"; // ou page d’accueil
+      window.location.href = "/";
     } catch (err) {
       console.error("Login error:", err);
       setError("Something went wrong");
