@@ -1,13 +1,11 @@
 import React from "react";
+import { Button as ChakraButton } from "@chakra-ui/react";
 
-const Button = ({ label, onClick, className = "" }) => {
+const Button = ({ label, onClick }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-200 ${className}`}
-    >
+    <ChakraButton onClick={onClick} colorPalette={"blue"}>
       {label}
-    </button>
+    </ChakraButton>
   );
 };
 

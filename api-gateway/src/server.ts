@@ -9,7 +9,12 @@ dotenv.config()
 const app: Express = express()
 const port = process.env.PORT ? parseInt(process.env.PORT) : 4000
 
-app.use(cors())
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+)
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.send({

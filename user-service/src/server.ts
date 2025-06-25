@@ -6,6 +6,7 @@ import { authRoutes } from './routes/auth'
 import cookieParser from 'cookie-parser'
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -13,6 +14,13 @@ const app: Express = express()
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000
 
 setupLogging(app)
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+)
 
 app.use(cookieParser())
 app.use(express.json())
