@@ -1,10 +1,12 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
+import VideogameList from "./containers/VideogameList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "./components/ui/provider";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import ProtectedRoute from "./components/protectedRoute";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -21,7 +23,7 @@ function App() {
   // const token = Cookies.get("idToken");
   const token = localStorage.getItem("idToken");
 
-  console.log(token)
+  console.log(token);
 
   // console.log(Cookies)
 
@@ -50,8 +52,10 @@ function App() {
     <Provider>
       <Router>
         <Routes>
-          <Route path="/" element={<div>Home</div>} />
           <Route path="/login" element={<LoginForm />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<VideogameList/>} />
+          </Route>
         </Routes>
       </Router>
     </Provider>

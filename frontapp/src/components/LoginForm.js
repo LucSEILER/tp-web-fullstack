@@ -23,6 +23,7 @@ const LoginForm = () => {
           const user = responseData.user;
           console.log("Login successfull, user: ", user);
           localStorage.setItem("idToken", token);
+          window.location.href = "/";
         }).catch((error) => {
           setError(error.response.data.message);
         });
