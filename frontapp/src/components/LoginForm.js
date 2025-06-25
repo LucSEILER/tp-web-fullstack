@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+import Button from "./atoms/Button";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -66,7 +67,8 @@ const LoginForm = () => {
         />
       </div>
 
-      <button type="submit">Login</button>
+      {/* <button type="submit">Login</button> */}
+      <Button label="Login" onClick={handleLogin} />
     </form>
   );
 };

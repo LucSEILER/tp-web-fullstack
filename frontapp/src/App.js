@@ -4,7 +4,7 @@ import LoginForm from "./components/LoginForm";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-primary h-screen flex flex-col">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
