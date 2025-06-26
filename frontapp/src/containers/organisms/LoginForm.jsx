@@ -18,27 +18,15 @@ const LoginForm = () => {
         })
         .then((response) => {
           const responseData = response.data.data;
-          console.log("Response data: ", responseData);
           const token = responseData.token;
-          const user = responseData.user;
-          console.log("Login successfull, user: ", user);
           localStorage.setItem("idToken", token);
           window.location.href = "/";
-        }).catch((error) => {
+        })
+        .catch((error) => {
           setError(error.response.data.message);
         });
     } catch (error) {
       setError(error.message);
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const response = await api.get("http://localhost:4000/users");
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      setError("Failed to fetch users");
     }
   };
 
@@ -63,8 +51,12 @@ const LoginForm = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <Button label="Login" onClick={handleLogin} backgroundColor="primary" size="xl" />
-      <Button label="Fetch Users" colorPalette="purple" onClick={fetchUsers} size="xl" />
+      <Button
+        label="Login"
+        onClick={handleLogin}
+        backgroundColor="buttonPrimary"
+        size="xl"
+      />
     </form>
   );
 };

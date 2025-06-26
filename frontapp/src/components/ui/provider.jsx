@@ -14,7 +14,8 @@ const config = defineConfig({
     tokens: {
       colors: {
         red: "#EE0F0F",
-        primary : "#2C2C2C",
+        primary: "#2C2C2C",
+        buttonPrimary: "#AD3215",
       },
     },
     semanticTokens: {
@@ -29,7 +30,7 @@ const config = defineConfig({
       },
     },
   },
-})
+});
 
 const system = createSystem(defaultConfig, config)
 

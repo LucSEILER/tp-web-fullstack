@@ -1,7 +1,7 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import LoginForm from "./containers/organisms/LoginForm";
-import VideogameList from "./containers/VideogameList";
+import VideogameList from "./components/organisms/VideogameList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "./components/ui/provider";
 import { useState } from "react";
@@ -33,7 +33,7 @@ function App() {
   // }
 
   return (
-    <div className="App bg-primary h-screen flex flex-col">
+    <div className="App bg-primary flex flex-col">
       <Provider>
         <Router>
           <Routes>
