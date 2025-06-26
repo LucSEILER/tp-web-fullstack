@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import cors from 'cors'
+import { initDBTables as initDB } from './config/db'
 
 dotenv.config()
 
@@ -37,6 +38,11 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 app.use('/', userRoutes)
 app.use('/auth', authRoutes)
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`API Gateway is running at http://localhost:${port}`)
-})
+const startServer = async () => {
+  await initDB()
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Running on http://0.0.0.0:${port}`)
+  })
+}
+
+startServer()
