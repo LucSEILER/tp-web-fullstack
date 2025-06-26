@@ -1,9 +1,9 @@
 import React from "react";
 import { Button as ChakraButton } from "@chakra-ui/react";
 
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, ...props }) => {
   return (
-    <ChakraButton onClick={onClick} colorPalette={"blue"}>
+    <ChakraButton onClick={onClick} color={"white"} {...props}>
       {label}
     </ChakraButton>
   );

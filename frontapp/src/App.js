@@ -1,12 +1,13 @@
 // import logo from "./logo.svg";
 import "./App.css";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./containers/organisms/LoginForm";
 import VideogameList from "./containers/VideogameList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "./components/ui/provider";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import ProtectedRoute from "./components/protectedRoute";
+import RegisterForm from "./containers/organisms/RegisterForm";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -32,33 +33,19 @@ function App() {
   // }
 
   return (
-    // <div className="App bg-primary h-screen flex flex-col">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //     <LoginForm />
-    //   </header>
-    // </div>
-    <Provider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<LoginForm />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<VideogameList/>} />
-          </Route>
-        </Routes>
-      </Router>
-    </Provider>
+    <div className="App bg-primary h-screen flex flex-col">
+      <Provider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<VideogameList />} />
+            </Route>
+          </Routes>
+        </Router>
+      </Provider>
+    </div>
   );
 }
 

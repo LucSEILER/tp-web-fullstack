@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Input from "./atoms/Input";
-import { Button } from "@chakra-ui/react";
-import api from "../helpers/request";
+import Input from "../../components/atoms/Input";
+import Button from "../atoms/Button";
+import api from "../../helpers/request";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -63,35 +63,8 @@ const LoginForm = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      {/* <div>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div> */}
-
-      {/* <button type="submit">Login</button> */}
-      {/* <Button label="Login" onClick={handleLogin} colorPalette={"blue"} size={"xl"}>test</Button>
-       */}
-      <Button colorPalette="orange" color="red" onClick={handleLogin} size="xl">
-        test
-      </Button>
-      <Button colorPalette="purple" onClick={fetchUsers} size="xl">
-        users
-      </Button>
+      <Button label="Login" onClick={handleLogin} backgroundColor="primary" size="xl" />
+      <Button label="Fetch Users" colorPalette="purple" onClick={fetchUsers} size="xl" />
     </form>
   );
 };

@@ -14,6 +14,7 @@ const config = defineConfig({
     tokens: {
       colors: {
         red: "#EE0F0F",
+        primary : "#2C2C2C",
       },
     },
     semanticTokens: {
