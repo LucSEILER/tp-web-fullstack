@@ -2,11 +2,19 @@ import { Request, Response } from 'express'
 import videogameService from '../services/videogame'
 
 const getGames = async (req: Request, res: Response) => {
-  const { limit } = req.query
+  const { limit, page } = req.query
+  const pageInt = page && typeof page === 'string' ? parseInt(page, 10) : 1
   const limitInt = limit && typeof limit === 'string' ? parseInt(limit, 10) : 10
-  const games = await videogameService.getGames(limitInt)
 
-  res.status(200).json(games)
+  const response = await videogameService.getGames(pageInt, limitInt)
+
+  if (!response || response.results.length === 0) {
+    res.status(404).json({ message: 'No games found', data: [] })
+  }
+
+  res
+    .status(200)
+    .json({ message: 'Games fetched successfully', data: response })
 }
 
 export default { getGames }
