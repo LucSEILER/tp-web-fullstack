@@ -33,7 +33,8 @@ h3,
 h4,
 h5,
 h6 {
-  color: #2c2c2c;
+  /* color: #2c2c2c; */
+  color: #acacac;
   margin-bottom: 1rem;
 }
 

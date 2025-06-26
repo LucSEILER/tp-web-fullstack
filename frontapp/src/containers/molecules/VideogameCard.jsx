@@ -1,12 +1,14 @@
+import Button from "../atoms/Button";
+
 const VideogameCard = ({ game, ...props }) => {
   return (
-    <div>
+    <div className="flex flex-col">
       <div>
-        {/* <img src={game.background_image} alt={game.name} /> */}
-        <h2>{game.name}</h2>
-        {/* <p>{game.released}</p> */}
-        {/* <p>{game.rating}</p> */}
+        <img src={game.image} alt={game.name} />
+        <h2 className="font-bold">{game.name}</h2>
+        <p>{game.description}</p>
       </div>
+      <Button className="mt-auto" label="+ Wishlist" backgroundColor="buttonPrimary" {...props} />
     </div>
   );
 };

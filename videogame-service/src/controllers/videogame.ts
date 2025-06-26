@@ -43,7 +43,23 @@ const addGameToList = async (req: Request, res: Response) => {
     .json({ message: 'Game successfully added to the list', data: result })
 }
 
-export default { getGames, getUserGamelists, addGameToList }
+const getSteamgameDetailsById = async (req: Request, res: Response) => {
+  const { appid } = req.params
+  if (!appid) {
+    res.status(400).json({ message: 'Appid is required' })
+    return
+  }
+
+  const response = await videogameService.getSteamgameDetailsById(Number(appid))
+  if (!response || response?.success === false) {
+    res.status(404).json({ message: 'Game not found' })
+    return
+  }
+
+  res.status(200).json({ message: 'Game fetched successfully', data: response })
+}
+
+export default { getGames, getUserGamelists, addGameToList, getSteamgameDetailsById }
 
 // import { Request, Response } from 'express'
 // import videogameService from '../services/videogame'
