@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Cookies from "js-cookie";
-import Button from "./atoms/Button";
+import Input from "./atoms/Input";
+import { Button } from "@chakra-ui/react";
+import api from "../helpers/request";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -9,43 +10,60 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:4000/users/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      api
+        .post("http://localhost:4000/users/auth/login", {
+          email,
+          password,
+        })
+        .then((response) => {
+          const responseData = response.data.data;
+          console.log("Response data: ", responseData);
+          const token = responseData.token;
+          const user = responseData.user;
+          console.log("Login successfull, user: ", user);
+          localStorage.setItem("idToken", token);
+          window.location.href = "/";
+        }).catch((error) => {
+          setError(error.response.data.message);
+        });
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        setError(result.message || "Login failed");
-        return;
-      }
-
-      Cookies.set("idToken", result.data.token, {
-        expires: 1,
-        secure: true,
-        sameSite: "Strict",
-      });
-
-      console.log("Login successful");
-      window.location.href = "/";
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("Something went wrong");
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get("http://localhost:4000/users");
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setError("Failed to fetch users");
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="flex flex-col gap-4">
       <h2>Login</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div>
+      <Input
+        type="email"
+        label="Email"
+        value={email}
+        required
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <Input
+        type="password"
+        label="Password"
+        value={password}
+        required
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      {/* <div>
         <label>Email</label>
         <input
           type="email"
@@ -63,10 +81,17 @@ const LoginForm = () => {
           required
           onChange={(e) => setPassword(e.target.value)}
         />
-      </div>
+      </div> */}
 
       {/* <button type="submit">Login</button> */}
-      <Button label="Login" onClick={handleLogin} />
+      {/* <Button label="Login" onClick={handleLogin} colorPalette={"blue"} size={"xl"}>test</Button>
+       */}
+      <Button colorPalette="red" onClick={handleLogin} size="xl">
+        test
+      </Button>
+      <Button colorPalette="red" onClick={fetchUsers} size="xl">
+        users
+      </Button>
     </form>
   );
 };
