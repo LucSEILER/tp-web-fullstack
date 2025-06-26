@@ -12,11 +12,11 @@ setupLogging(app)
 
 app.use(express.json())
 
-// app.get('/', (req: any, res: any) => {
-//   res.send({ message: 'Welcome to videogame-service' })
-// })
+app.get('/', (req: any, res: any) => {
+  res.send({ message: 'Welcome to videogame-service' })
+})
 
-app.use('/', videogameRoutes)
+app.use('/games', videogameRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`API Gateway is running at http://localhost:${port}`)

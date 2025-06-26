@@ -86,10 +86,10 @@ const LoginForm = () => {
       {/* <button type="submit">Login</button> */}
       {/* <Button label="Login" onClick={handleLogin} colorPalette={"blue"} size={"xl"}>test</Button>
        */}
-      <Button colorPalette="red" onClick={handleLogin} size="xl">
+      <Button colorPalette="orange" color="red" onClick={handleLogin} size="xl">
         test
       </Button>
-      <Button colorPalette="red" onClick={fetchUsers} size="xl">
+      <Button colorPalette="purple" onClick={fetchUsers} size="xl">
         users
       </Button>
     </form>
