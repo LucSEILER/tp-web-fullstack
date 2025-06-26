@@ -1,88 +1,67 @@
 import axios from 'axios'
-import dotenv from 'dotenv'
-import GameSimple from '../models/game'
+import SteamGameSimple from '../models/steamGame'
+import PaginatedApiResponse from '../models/paginatedApiResponse'
+import db from '../config/db'
 
-dotenv.config()
+let steamGameSimpleCache: SteamGameSimple[] = []
+let lastCacheUpdate = 0
+const CACHE_DURATION = 60 * 60 * 1000 // 1 hour
 
-let accessToken: string = ''
-let tokenExpiration = Date.now()
-
-async function getAccessToken() {
+const getGames = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedApiResponse<SteamGameSimple>> => {
   const now = Date.now()
 
-  if (!accessToken || now >= tokenExpiration) {
-    console.log('🔐 Getting new Twitch access token...')
-    const res = await axios.post('https://id.twitch.tv/oauth2/token', null, {
-      params: {
-        client_id: process.env.TWITCH_CLIENT_ID,
-        client_secret: process.env.TWITCH_CLIENT_SECRET,
-        grant_type: 'client_credentials',
-      },
-    })
+  console.log('Page', page, 'Limit', limit)
 
-    accessToken = res.data.access_token
-    tokenExpiration = now + (res.data.expires_in - 60) * 1000
+  if (
+    now - lastCacheUpdate > CACHE_DURATION ||
+    steamGameSimpleCache.length === 0
+  ) {
+    console.log('Updating cache...')
+    const response = await axios.get('https://steamspy.com/api.php?request=all')
+    const data = response.data
+
+    steamGameSimpleCache = Object.entries(data).map(
+      ([key, value]: [string, any]) => ({
+        appid: Number(key),
+        name: value.name,
+      })
+    )
+
+    lastCacheUpdate = now
   }
 
-  return accessToken
+  const count = steamGameSimpleCache.length
+  const totalPages = Math.ceil(count / limit)
+  const start = (page - 1) * limit
+  const results = steamGameSimpleCache.slice(start, start + limit)
+  const nextPage = page + 1
+
+  return {
+    count,
+    currentPage: page,
+    totalPages: totalPages,
+    next: nextPage,
+    pageSize: limit,
+    results,
+  }
 }
 
-const getGames = async (limit: number = 10): Promise<GameSimple[]> => {
-  const token = await getAccessToken()
-
-  const response = await axios.post(
-    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
-    `fields name, summary, cover.url, first_release_date, genres.name, rating; limit ${limit};`,
-    {
-      headers: {
-        'Client-ID': process.env.TWITCH_CLIENT_ID,
-        Authorization: `Bearer ${token}`,
-      },
-    }
+const getUserGamelists = async () => {
+  const userGamelists = await await db.query(
+    'SELECT id, user_id, game_id, name FROM videogame_userlist'
   )
-
-  return response.data
+  return userGamelists.rows || []
 }
 
-const getGameById = async (id: number): Promise<GameSimple | null> => {
-  const token = await getAccessToken()
-
-  const response = await axios.post(
-    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
-    `fields name, summary, cover.url, first_release_date, genres.name, rating; where id = ${id};`,
-    {
-      headers: {
-        'Client-ID': process.env.TWITCH_CLIENT_ID,
-        Authorization: `Bearer ${token}`,
-      },
-    }
+const addGameToList = async (gameId: number, userId: number, name: string) => {
+  const result = await db.query(
+    'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING *',
+    [gameId, userId, name]
   )
-
-  return response.data.length > 0 ? response.data[0] : null
+  return result.rows[0]
 }
 
-const searchGamesByName = async (
-  name: string,
-  limit: number = 10
-): Promise<GameSimple[]> => {
-  const token = await getAccessToken()
-
-  const response = await axios.post(
-    process.env.IGDB_API_URL || 'https://api.igdb.com/v4/games',
-    `
-    search "${name}";
-    fields name, summary, cover.url, first_release_date, genres.name, rating;
-    limit ${limit};
-    `,
-    {
-      headers: {
-        'Client-ID': process.env.TWITCH_CLIENT_ID,
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-
-  return response.data
-}
-
-export default { getGames, getGameById, searchGamesByName }
+export default { getGames, getUserGamelists, addGameToList }

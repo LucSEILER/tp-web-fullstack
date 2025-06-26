@@ -1,7 +1,6 @@
 import authService from '../services/auth'
 import userService from '../services/user'
 import { Request, Response } from 'express'
-import HttpError from '../utils/error'
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
