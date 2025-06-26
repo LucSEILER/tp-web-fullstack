@@ -61,7 +61,7 @@ const addGameToList = async (gameId: number, userId: number, name: string) => {
     'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING *',
     [gameId, userId, name]
   )
-  return result.rows
+  return result.rows[0]
 }
 
 export default { getGames, getUserGamelists, addGameToList }

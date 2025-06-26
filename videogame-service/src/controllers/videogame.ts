@@ -19,16 +19,28 @@ const getGames = async (req: Request, res: Response) => {
 
 const getUserGamelists = async (req: Request, res: Response) => {
   const userGamelists = await videogameService.getUserGamelists()
-  res.status(200).json({ message: 'Gamelists fetched successfully', data: userGamelists })
+  res
+    .status(200)
+    .json({ message: 'Gamelists fetched successfully', data: userGamelists })
 }
 
 const addGameToList = async (req: Request, res: Response) => {
   const { gameId, name } = req.body
+  const userUuid = (req as any).user?.id
 
-  // get userID from JWT
+  console.log('User UUID', userUuid)
 
-  const result = await videogameService.addGameToList(gameId, 1, name)
-  res.status(200).json({ message: 'Game added to list successfully', data: result })
+  if (!userUuid) {
+    res
+      .status(401)
+      .json({ message: 'Unauthorized', error: 'User UUID not found' })
+    return
+  }
+
+  const result = await videogameService.addGameToList(gameId, userUuid, name)
+  res
+    .status(200)
+    .json({ message: 'Game successfully added to the list', data: result })
 }
 
 export default { getGames, getUserGamelists, addGameToList }
