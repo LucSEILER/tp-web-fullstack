@@ -17,7 +17,21 @@ const getGames = async (req: Request, res: Response) => {
     .json({ message: 'Games fetched successfully', data: response })
 }
 
-export default { getGames }
+const getUserGamelists = async (req: Request, res: Response) => {
+  const userGamelists = await videogameService.getUserGamelists()
+  res.status(200).json({ message: 'Gamelists fetched successfully', data: userGamelists })
+}
+
+const addGameToList = async (req: Request, res: Response) => {
+  const { gameId, name } = req.body
+
+  // get userID from JWT
+
+  const result = await videogameService.addGameToList(gameId, 1, name)
+  res.status(200).json({ message: 'Game added to list successfully', data: result })
+}
+
+export default { getGames, getUserGamelists, addGameToList }
 
 // import { Request, Response } from 'express'
 // import videogameService from '../services/videogame'

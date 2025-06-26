@@ -1,12 +1,13 @@
 import axios from 'axios'
 import SteamGameSimple from '../models/steamGame'
 import PaginatedApiResponse from '../models/paginatedApiResponse'
+import db from '../config/db'
 
 let steamGameSimpleCache: SteamGameSimple[] = []
 let lastCacheUpdate = 0
 const CACHE_DURATION = 60 * 60 * 1000 // 1 hour
 
-export const getGames = async (
+const getGames = async (
   page: number = 1,
   limit: number = 10
 ): Promise<PaginatedApiResponse<SteamGameSimple>> => {
@@ -48,4 +49,19 @@ export const getGames = async (
   }
 }
 
-export default { getGames }
+const getUserGamelists = async () => {
+  const userGamelists = await await db.query(
+    'SELECT id, user_id, game_id, name FROM videogame_userlist'
+  )
+  return userGamelists.rows || []
+}
+
+const addGameToList = async (gameId: number, userId: number, name: string) => {
+  const result = await db.query(
+    'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING *',
+    [gameId, userId, name]
+  )
+  return result.rows
+}
+
+export default { getGames, getUserGamelists, addGameToList }
