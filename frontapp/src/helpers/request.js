@@ -9,6 +9,8 @@ const api = axios.create({
   },
 });
 
+console.log(localStorage.getItem("idToken"));
+
 // api.interceptors.response.use(
 //   (response) => response, // Laisse passer la réponse si tout va bien
 //   (error) => {

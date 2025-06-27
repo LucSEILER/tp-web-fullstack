@@ -105,7 +105,7 @@ const getSteamgameDetailsById = async (appid: number) => {
 
 const addGameToList = async (gameId: number, userId: number, name: string) => {
   const result = await db.query(
-    'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING *',
+    'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING id, game_id, user_id, name',
     [gameId, userId, name]
   )
   return result.rows[0]
