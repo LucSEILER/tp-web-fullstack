@@ -53,7 +53,9 @@ const getSteamgameDetailsById = async (req: Request, res: Response) => {
   if (!appid) {
     res.status(400).json({ message: 'Appid is required' })
     return
-  }
+  } 
+
+  console.log('Looking for game with appid', appid)
 
   const response = await videogameService.getSteamgameDetailsById(Number(appid))
   if (!response || response?.success === false) {

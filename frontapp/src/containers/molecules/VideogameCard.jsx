@@ -2,6 +2,7 @@ import Button from "../atoms/Button";
 import axios from "axios";
 import { useState } from "react";
 import { toaster } from "../../components/ui/toaster";
+import { Link } from "react-router-dom";
 
 const VideogameCard = ({ game, isAdded, ...props }) => {
   const [userGames, setUserGames] = useState([]);
@@ -30,11 +31,11 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
 
   return (
     <div className="flex flex-col">
-      <div>
+      <Link to={`/games/${game.appid}`}>
         <img src={game.image} alt={game.name} />
         <h2 className="font-bold">{game.name}</h2>
         <p className="text-sm mb-4">{game.description}</p>
-      </div>
+      </Link>
       <Button
         onClick={handleAddToWishlist}
         className="mt-auto"

@@ -9,3 +9,5 @@ const getUuidFromToken = () => {
   }
   return null
 }
+
+export default getUuidFromToken
