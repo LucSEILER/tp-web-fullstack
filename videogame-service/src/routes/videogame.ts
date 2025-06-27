@@ -5,8 +5,10 @@ import authMiddleware from '../middleware/authToken'
 const videogameRoutes = express.Router()
 
 videogameRoutes.get('/', videogameController.getGames)
-videogameRoutes.get('/userlists', authMiddleware, videogameController.getUserGamelists)
-videogameRoutes.post('/userlists', authMiddleware, videogameController.addGameToList)
+videogameRoutes.get('/details/:appid', videogameController.getSteamgameDetailsById)
+videogameRoutes.get('/wichlist/my', authMiddleware, videogameController.getUserWishlist)
+videogameRoutes.get('/wichlist', authMiddleware, videogameController.getUserGamelists)
+videogameRoutes.post('/wichlist', authMiddleware, videogameController.addGameToList)
 // videogameRoutes.get('/search', videogameController.searchGamesByName)
 // videogameRoutes.get('/:id', videogameController.getGameById)
 

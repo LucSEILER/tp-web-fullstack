@@ -38,43 +38,61 @@ const addGameToList = async (req: Request, res: Response) => {
   }
 
   const result = await videogameService.addGameToList(gameId, userUuid, name)
+  if (result.alreadyInTheList) {
+    res.status(409).json({ message: 'Game already in the list' })
+    return
+  }
+
   res
     .status(200)
     .json({ message: 'Game successfully added to the list', data: result })
 }
 
-export default { getGames, getUserGamelists, addGameToList }
+const getSteamgameDetailsById = async (req: Request, res: Response) => {
+  const { appid } = req.params
+  if (!appid) {
+    res.status(400).json({ message: 'Appid is required' })
+    return
+  }
 
-// import { Request, Response } from 'express'
-// import videogameService from '../services/videogame'
+  const response = await videogameService.getSteamgameDetailsById(Number(appid))
+  if (!response || response?.success === false) {
+    res.status(404).json({ message: 'Game not found' })
+    return
+  }
 
-// const getGames = async (req: Request, res: Response) => {
-//   try {
-//     const { limit } = req.query
-//     const games = await videogameService.getGames(
-//       limit && typeof limit === 'string' ? parseInt(limit, 10) : 10
-//     )
-//     res.status(200).json(games)
-//   } catch (error) {
-//     console.error('Error fetching games:', error)
-//     res.status(500).json({ message: 'Internal server error' })
-//   }
-// }
+  res.status(200).json({ message: 'Game fetched successfully', data: response })
+}
 
-// const getGameById = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params
-//     const game = await videogameService.getGameById(parseInt(id, 10))
-//     if (game) {
-//       res.status(200).json(game)
-//     } else {
-//       res.status(404).json({ message: 'Game not found' })
-//     }
-//   } catch (error) {
-//     console.error('Error fetching game:', error)
-//     res.status(500).json({ message: 'Internal server error' })
-//   }
-// }
+const getUserWishlist = async (req: Request, res: Response) => {
+  const userUuid = (req as any).user?.id
+  if (!userUuid) {
+    res
+      .status(401)
+      .json({ message: 'Unauthorized', error: 'User UUID not found' })
+    return
+  }
+
+  console.log('User UUID', userUuid)
+
+  const userWishlist = await videogameService.getUserWishlist(userUuid)
+  if (!userWishlist) {
+    res.status(404).json({ message: 'Wishlist not found' })
+    return
+  }
+
+  res
+    .status(200)
+    .json({ message: 'Wishlist fetched successfully', data: userWishlist })
+}
+
+export default {
+  getGames,
+  getUserGamelists,
+  addGameToList,
+  getSteamgameDetailsById,
+  getUserWishlist,
+}
 
 // const searchGamesByName = async (req: Request, res: Response) => {
 //   try {
@@ -86,5 +104,3 @@ export default { getGames, getUserGamelists, addGameToList }
 //     res.status(500).json({ message: 'Internal server error' })
 //   }
 // }
-
-// export default { getGames, getGameById, searchGamesByName }
