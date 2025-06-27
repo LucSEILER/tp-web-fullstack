@@ -1,9 +1,11 @@
 import Button from "../atoms/Button";
 import axios from "axios";
 import { useState } from "react";
+import { toaster } from "../../components/ui/toaster";
 
 const VideogameCard = ({ game, isAdded, ...props }) => {
   const [userGames, setUserGames] = useState([]);
+  const [message, setMessage] = useState("");
 
   const handleAddToWishlist = async () => {
     try {
@@ -12,8 +14,15 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
         { gameId: game.appid, name: game.name },
         { withCredentials: true }
       );
-      console.log("Videogame added to wishlist:", response.data);
+
+      const { message } = response.data;
       setUserGames((prev) => [...prev, game.appid]);
+      setMessage(message);
+
+      toaster.create({
+        type: "success",
+        description: message,
+      });
     } catch (error) {
       console.error("Error adding videogame to wishlist:", error);
     }

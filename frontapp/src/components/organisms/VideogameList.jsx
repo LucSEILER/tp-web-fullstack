@@ -15,7 +15,7 @@ const VideogameList = () => {
         const { data, message } = response.data;
 
         setVideogames(data.results);
-        setMessage(message);
+        setMessage(message);        
       } catch (error) {
         console.error("Error fetching videogames:", error);
         setMessage("Une erreur est survenue.");
@@ -48,6 +48,7 @@ const VideogameList = () => {
 
     fetchUserWishlist();
   }, []);
+
 
   // videogames.map((vg) => {
   //   for (let i = 0; i < userWishlist.length; i++) {

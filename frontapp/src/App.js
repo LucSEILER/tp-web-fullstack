@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "./components/ui/provider";
 import ProtectedRoute from "./components/protectedRoute";
 import RegisterForm from "./containers/organisms/RegisterForm";
+import Toaster from "./components/atoms/Toaster";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             </Route>
           </Routes>
         </Router>
+        <Toaster />
       </Provider>
     </div>
   );

@@ -45,7 +45,7 @@ const addGameToList = async (req: Request, res: Response) => {
 
   res
     .status(200)
-    .json({ message: 'Game successfully added to the list', data: result })
+    .json({ message: 'Game successfully added to your list', data: result })
 }
 
 const getSteamgameDetailsById = async (req: Request, res: Response) => {
