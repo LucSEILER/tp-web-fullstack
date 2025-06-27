@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 
 const VideogameCard = ({ game, isAdded, ...props }) => {
-  const [added, setAdded] = useState(false);
+  const [userGames, setUserGames] = useState([]);
 
   const handleAddToWishlist = async () => {
     try {
@@ -13,8 +13,7 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
         { withCredentials: true }
       );
       console.log("Videogame added to wishlist:", response.data);
-      // setAdded(true);
-      isAdded = true;
+      setUserGames((prev) => [...prev, game.appid]);
     } catch (error) {
       console.error("Error adding videogame to wishlist:", error);
     }
@@ -25,7 +24,7 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
       <div>
         <img src={game.image} alt={game.name} />
         <h2 className="font-bold">{game.name}</h2>
-        <p>{game.description}</p>
+        <p className="text-sm mb-4">{game.description}</p>
       </div>
       <Button
         onClick={handleAddToWishlist}
