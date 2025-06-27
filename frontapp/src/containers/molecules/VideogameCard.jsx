@@ -2,7 +2,7 @@ import Button from "../atoms/Button";
 import axios from "axios";
 import { useState } from "react";
 
-const VideogameCard = ({ game, ...props }) => {
+const VideogameCard = ({ game, isAdded, ...props }) => {
   const [added, setAdded] = useState(false);
 
   const handleAddToWishlist = async () => {
@@ -13,7 +13,8 @@ const VideogameCard = ({ game, ...props }) => {
         { withCredentials: true }
       );
       console.log("Videogame added to wishlist:", response.data);
-      setAdded(true);
+      // setAdded(true);
+      isAdded = true;
     } catch (error) {
       console.error("Error adding videogame to wishlist:", error);
     }
@@ -29,8 +30,9 @@ const VideogameCard = ({ game, ...props }) => {
       <Button
         onClick={handleAddToWishlist}
         className="mt-auto"
-        label={added ? "✔ Added" : "Add to wishlist"}
+        label={isAdded ? "✔ Added" : "Add to wishlist"}
         backgroundColor="buttonPrimary"
+        disabled={isAdded}
         {...props}
       />
     </div>

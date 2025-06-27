@@ -6,6 +6,7 @@ const videogameRoutes = express.Router()
 
 videogameRoutes.get('/', videogameController.getGames)
 videogameRoutes.get('/details/:appid', videogameController.getSteamgameDetailsById)
+videogameRoutes.get('/wichlist/my', authMiddleware, videogameController.getUserWishlist)
 videogameRoutes.get('/wichlist', authMiddleware, videogameController.getUserGamelists)
 videogameRoutes.post('/wichlist', authMiddleware, videogameController.addGameToList)
 // videogameRoutes.get('/search', videogameController.searchGamesByName)

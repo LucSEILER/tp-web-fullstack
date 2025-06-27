@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { get } from 'axios'
 import SteamGameSimple from '../models/steamGame'
 import PaginatedApiResponse from '../models/paginatedApiResponse'
 import db from '../config/db'
@@ -104,6 +104,15 @@ const getSteamgameDetailsById = async (appid: number) => {
 }
 
 const addGameToList = async (gameId: number, userId: number, name: string) => {
+  const existingInTheList = await db.query(
+    'SELECT id FROM videogame_userlist WHERE game_id = $1 AND user_id = $2',
+    [gameId, userId]
+  )
+
+  if (existingInTheList.rows.length > 0) {
+    return { alreadyInTheList: true, id: existingInTheList.rows[0].id }
+  }
+  
   const result = await db.query(
     'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING id, game_id, user_id, name',
     [gameId, userId, name]
@@ -111,9 +120,21 @@ const addGameToList = async (gameId: number, userId: number, name: string) => {
   return result.rows[0]
 }
 
+const getUserWishlist = async (userUuid: string) => {
+  const result = await db.query(
+    'SELECT id, game_id, name FROM videogame_userlist WHERE user_id = $1',
+    [userUuid]
+  )
+
+  console.log('user wishlist', result.rows)
+
+  return result.rows
+}
+
 export default {
   getGames,
   getUserGamelists,
   addGameToList,
   getSteamgameDetailsById,
+  getUserWishlist,
 }
