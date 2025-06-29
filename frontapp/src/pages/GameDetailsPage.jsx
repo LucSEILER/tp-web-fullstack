@@ -70,7 +70,7 @@ const GameDetailsPage = () => {
     try {
       const response = await axios.post(
         `http://localhost:4000/videogame/games/review`,
-        { rating, review, gameId: id, name: 'test' },
+        { rating, review, gameId: id, name: game.name },
         { withCredentials: true }
       );
       const { data, message } = response.data;
@@ -105,7 +105,7 @@ const GameDetailsPage = () => {
         <div>
           {gameReviews.map((review) => (
             <div key={review.id}>
-              <p>{review.name}</p>
+              <p>{review.username}</p>
               <p>{review.review}</p>
             </div>
           ))}
