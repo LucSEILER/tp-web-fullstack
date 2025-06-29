@@ -66,7 +66,8 @@ const VideogameList = ({ gameList, isLoading, userWishlist}) => {
         <p>Loading...</p>
       ) : (
           <>
-          <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              {/* <pre>{JSON.stringify(userWishlist, null, 2)}</pre> */}
             {gameList.map((vg) => (
               <VideogameCard
                 key={vg.appid}

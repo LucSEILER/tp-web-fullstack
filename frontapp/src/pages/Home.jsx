@@ -50,7 +50,7 @@ const Home = () => {
           withCredentials: true,
         });
         const { data, message } = response.data;
-        const ids = data.map((vg) => vg.game_id);
+        const ids = data.map((vg) => vg.appid);
 
         setUserWishlist(ids);
         setMessage(message);

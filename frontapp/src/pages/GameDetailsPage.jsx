@@ -41,30 +41,30 @@ const GameDetailsPage = () => {
   }, [id]);
 
   useEffect(() => {
-    const fetchGameReviews = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:4000/videogame/games/reviews/${id}`,
-          { withCredentials: true }
-        );
-        const { data, message } = response.data;
-        console.log(response);
-
-        setMessage(message);
-        setGameReviews(data);
-
-        toaster.create({
-          type: "info",
-          description: message,
-          duration: 3000,
-        });
-      } catch (err) {
-        console.error("Failed to fetch game", err);
-      }
-    };
-
     fetchGameReviews();
   }, [id]);
+
+  // juste avant les useEffect
+  const fetchGameReviews = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/videogame/games/reviews/${id}`,
+        { withCredentials: true }
+      );
+      const { data, message } = response.data;
+
+      setMessage(message);
+      setGameReviews(data);
+
+      toaster.create({
+        type: "info",
+        description: message,
+        duration: 3000,
+      });
+    } catch (err) {
+      console.error("Failed to fetch game", err);
+    }
+  };
 
   const handleAddReview = async () => {
     try {
@@ -85,7 +85,7 @@ const GameDetailsPage = () => {
         duration: 3000,
       });
 
-      // call fetchGameReviews()
+      fetchGameReviews();
     } catch (err) {
       console.error("Failed to fetch game", err);
     }
@@ -128,7 +128,11 @@ const GameDetailsPage = () => {
         />
       </div>
 
-      <Button backgroundColor="buttonPrimary" onClick={handleAddReview} label="Add Review"/>
+      <Button
+        backgroundColor="buttonPrimary"
+        onClick={handleAddReview}
+        label="Add Review"
+      />
     </div>
   );
 };
