@@ -10,22 +10,36 @@ const Home = () => {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [userWishlist, setUserWishlist] = useState([]);
 
-  useEffect(() => {
-    const fetchVideogames = async () => {
-      try {
-        const response = await api.get("/videogame/games");
-        const { data, message } = response.data;
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  const fetchVideogames = async (pageToFetch = 1) => {
+    try {
+      const response = await api.get(`/videogame/games?page=${pageToFetch}`);
+      const { data, message } = response.data;
+
+      if (pageToFetch === 1) {
         setVideogames(data.results);
-        setMessage(message);
-      } catch (error) {
-        console.error("Error fetching videogames:", error);
-        setMessage("Une erreur est survenue.");
-      } finally {
-        setIsVideoLoading(false);
+      } else {
+        setVideogames((prev) => [...prev, ...data.results]);
       }
-    };
 
+      setMessage(message);
+
+      if (!data.next) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Error fetching videogames:", error);
+      setMessage("Une erreur est survenue.");
+    } finally {
+      setIsVideoLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
     fetchVideogames();
   }, []);
 
@@ -41,7 +55,7 @@ const Home = () => {
         setUserWishlist(ids);
         setMessage(message);
       } catch (error) {
-        console.error("Error fetching videogames:", error);
+        console.error("Error fetching user wishlist:", error);
         setMessage("Une erreur est survenue.");
       } finally {
         setIsUserLoading(false);
@@ -51,25 +65,42 @@ const Home = () => {
     fetchUserWishlist();
   }, []);
 
-  videogames.map((vg) => {
-    for (let i = 0; i < userWishlist.length; i++) {
-      if (vg.appid === userWishlist[i]) {
-        vg.isAdded = true;
-      }
-    }
+  videogames.forEach((vg) => {
+    vg.isAdded = userWishlist.includes(vg.appid);
   });
+
+  const loadMoreGames = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    setIsLoadingMore(true);
+    fetchVideogames(nextPage);
+  };
 
   return (
     <div>
-      <h1>Home</h1>
       <h1 className="text-center text-xl font-bold mb-4">
         Recherche de jeux Steam
       </h1>
       <SteamSearchBar />
+
       {isVideoLoading || isUserLoading ? (
-        <p>Loading...</p>
+        <p className="text-center text-gray-500 mt-4">Chargement...</p>
       ) : (
-        <VideogameList gameList={videogames} userWishlist={userWishlist} />
+        <>
+          <VideogameList gameList={videogames} userWishlist={userWishlist} />
+
+          {hasMore && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={loadMoreGames}
+                disabled={isLoadingMore}
+                className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition disabled:opacity-50"
+              >
+                {isLoadingMore ? "Loading..." : "Load more"}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

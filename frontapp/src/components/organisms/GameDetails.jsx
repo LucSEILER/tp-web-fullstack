@@ -22,14 +22,16 @@ const GameDetails = ({ game }) => {
         )}
       </div>
 
-      <div className="mt-4">
-        <strong className="text-lg">Genres:</strong>
-        <ul className="list-disc ml-6">
-          {game.genres.map((genre) => (
-            <li key={genre.id}>{genre.description}</li>
-          ))}
-        </ul>
-      </div>
+      {game.genres && (
+        <div className="mt-4">
+          <strong className="text-lg">Genres:</strong>
+          <ul className="list-disc ml-6">
+            {game.genres.map((genre) => (
+              <li key={genre.id}>{genre.description}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-4">
         <strong className="text-lg">Supported Languages:</strong>
@@ -39,15 +41,23 @@ const GameDetails = ({ game }) => {
         />
       </div>
 
-      <div className="mt-4">
-        <strong className="text-lg">Developers:</strong>{" "}
-        {game.developers.join(", ")}
-      </div>
+      {game.developers && game.developers.length > 0 && (
+        <div className="mt-4">
+          <strong className="text-lg">Developers:</strong>
+          <ul className="list-disc ml-6">
+            {game.developers.map((developer) => (
+              <li key={developer.id}>{developer.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      <div className="mt-4">
-        <strong className="text-lg">Publishers:</strong>{" "}
-        {game.publishers.join(", ")}
-      </div>
+      {game.publishers && game.publishers.length > 0 && (
+        <div className="mt-4">
+          <strong className="text-lg">Publishers:</strong>{" "}
+          {game.publishers.join(", ")}
+        </div>
+      )}
 
       <div className="mt-4">
         <strong className="text-lg">Price:</strong>{" "}
@@ -91,19 +101,21 @@ const GameDetails = ({ game }) => {
         <p className="text-sm mt-1">{game.linux_requirements.minimum}</p>
       </div>
 
-      <div className="mt-6">
-        <strong className="text-lg">Screenshots:</strong>
-        <div className="flex overflow-x-auto gap-2 mt-2">
-          {game.screenshots.map((screenshot) => (
-            <img
-              key={screenshot.id}
-              src={screenshot.path_thumbnail}
-              alt={`Screenshot ${screenshot.id}`}
-              className="w-48 h-auto rounded shadow"
-            />
-          ))}
+      {game.screenshots && game.screenshots.length > 0 && (
+        <div className="mt-6">
+          <strong className="text-lg">Screenshots:</strong>
+          <div className="flex overflow-x-auto gap-2 mt-2">
+            {game.screenshots.map((screenshot) => (
+              <img
+                key={screenshot.id}
+                src={screenshot.path_thumbnail}
+                alt={`Screenshot ${screenshot.id}`}
+                className="w-48 h-auto rounded shadow"
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

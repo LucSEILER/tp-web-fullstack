@@ -126,9 +126,14 @@ const getUserWishlist = async (userUuid: string) => {
     [userUuid]
   )
 
-  console.log('user wishlist', result.rows)
+  if (result.rows.length === 0) {
+    return []
+  }
 
-  return result.rows
+  const gameIds = result.rows.map((r) => r.game_id)
+  const games = await fetchSteamGameDetailsBatch(gameIds)
+
+  return games
 }
 
 const addReview = async (userUuid: string, username: string, gameId: number, name: string, rating: number, review: string) => {
