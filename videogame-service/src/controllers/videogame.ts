@@ -106,10 +106,19 @@ const addReview = async (req: Request, res: Response) => {
     return
   }
 
-  console.log('User UUID', userUuid)
+  const username = (req as any).user?.name
+  if (!username || username === '') {
+    res
+      .status(401)
+      .json({ message: 'Unauthorized', error: 'Username not found' })
+    return
+  }
+
+  console.log('User UUID', userUuid, 'Username', username)
 
   const result = await videogameService.addReview(
     userUuid,
+    username,
     gameId,
     name,
     rating,
@@ -132,7 +141,21 @@ const getReviewsByGameId = async (req: Request, res: Response) => {
   }
 
   const reviews = await videogameService.getReviewsByGameId(Number(gameId))
-  res.status(200).json({ message: 'Reviews fetched successfully', data: reviews })
+  res
+    .status(200)
+    .json({ message: 'Reviews fetched successfully', data: reviews })
+}
+
+const searchGamesByName = async (req: Request, res: Response) => {
+  const { name } = req.query
+
+  if (!name) {
+    res.status(400).json({ message: 'Name is required' })
+    return
+  }
+
+  const games = await videogameService.searchGamesByName(name as string)
+  res.status(200).json({ message: 'Games fetched successfully', data: games })
 }
 
 export default {
@@ -142,7 +165,8 @@ export default {
   getSteamgameDetailsById,
   getUserWishlist,
   addReview,
-  getReviewsByGameId
+  getReviewsByGameId,
+  searchGamesByName
 }
 
 // const searchGamesByName = async (req: Request, res: Response) => {

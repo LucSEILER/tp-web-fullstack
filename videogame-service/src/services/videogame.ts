@@ -131,7 +131,7 @@ const getUserWishlist = async (userUuid: string) => {
   return result.rows
 }
 
-const addReview = async (userUuid: string, gameId: number, name: string, rating: number, review: string) => {
+const addReview = async (userUuid: string, username: string, gameId: number, name: string, rating: number, review: string) => {
   const existingReview = await db.query(
     'SELECT id FROM game_reviews WHERE game_id = $1 AND user_id = $2',
     [gameId, userUuid]
@@ -142,8 +142,8 @@ const addReview = async (userUuid: string, gameId: number, name: string, rating:
   }
   
   const result = await db.query(
-    'INSERT INTO game_reviews (user_id, game_id, name, rating, review) VALUES ($1, $2, $3, $4, $5) RETURNING id, user_id, game_id, name, rating, review',
-    [userUuid, gameId, name, rating, review]
+    'INSERT INTO game_reviews (user_id, username, game_id, name, rating, review) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, user_id, username, game_id, name, rating, review',
+    [userUuid, username, gameId, name, rating, review]
   )
 
   console.log('result of add review', result.rows)
@@ -153,11 +153,25 @@ const addReview = async (userUuid: string, gameId: number, name: string, rating:
 
 const getReviewsByGameId = async (gameId: number) => {
   const result = await db.query(
-    'SELECT id, user_id, game_id, name, rating, review FROM game_reviews WHERE game_id = $1',
+    'SELECT id, user_id, username, game_id, name, rating, review FROM game_reviews WHERE game_id = $1',
     [gameId]
   )
 
   return result.rows
+}
+
+const searchGamesByName = async (name: string) => {
+  const encoded = encodeURIComponent(name)
+  const url = `https://steamcommunity.com/actions/SearchApps/${encoded}`
+
+  const res = await axios.get(url, {
+    headers: {
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36',
+    },
+  })
+
+  return res.data
 }
 
 export default {
@@ -167,5 +181,6 @@ export default {
   getSteamgameDetailsById,
   getUserWishlist,
   addReview,
-  getReviewsByGameId
+  getReviewsByGameId,
+  searchGamesByName
 }

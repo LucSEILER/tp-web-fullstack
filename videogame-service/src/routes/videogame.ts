@@ -11,7 +11,7 @@ videogameRoutes.get('/wichlist', authMiddleware, videogameController.getUserGame
 videogameRoutes.post('/wichlist', authMiddleware, videogameController.addGameToList)
 videogameRoutes.get('/reviews/:gameId', videogameController.getReviewsByGameId)
 videogameRoutes.post('/review', authMiddleware, videogameController.addReview)
-// videogameRoutes.get('/search', videogameController.searchGamesByName)
+videogameRoutes.get('/search', videogameController.searchGamesByName)
 // videogameRoutes.get('/:id', videogameController.getGameById)
 
 export { videogameRoutes }

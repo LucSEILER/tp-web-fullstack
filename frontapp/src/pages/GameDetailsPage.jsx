@@ -105,7 +105,7 @@ const GameDetailsPage = () => {
         <div>
           {gameReviews.map((review) => (
             <div key={review.id}>
-              <p>{review.user_id}</p>
+              <p>{review.name}</p>
               <p>{review.review}</p>
             </div>
           ))}
