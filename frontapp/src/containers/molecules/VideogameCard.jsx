@@ -11,7 +11,7 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
   const handleAddToWishlist = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/videogame/games/wichlist",
+        "http://localhost:4000/videogame/wishlist",
         { gameId: game.appid, name: game.name },
         { withCredentials: true }
       );

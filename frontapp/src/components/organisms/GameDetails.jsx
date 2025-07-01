@@ -10,7 +10,7 @@ const GameDetails = ({ game }) => {
   const handleAddToWishlist = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/videogame/games/wichlist",
+        "http://localhost:4000/videogame/games/wishlist",
         { gameId: game.steam_appid, name: game.name },
         { withCredentials: true }
       );

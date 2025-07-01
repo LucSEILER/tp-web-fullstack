@@ -17,37 +17,6 @@ const getGames = async (req: Request, res: Response) => {
     .json({ message: 'Games fetched successfully', data: response })
 }
 
-const getUserGamelists = async (req: Request, res: Response) => {
-  const userGamelists = await videogameService.getUserGamelists()
-  res
-    .status(200)
-    .json({ message: 'Gamelists fetched successfully', data: userGamelists })
-}
-
-const addGameToList = async (req: Request, res: Response) => {
-  const { gameId, name } = req.body
-  const userUuid = (req as any).user?.id
-
-  console.log('User UUID', userUuid)
-
-  if (!userUuid) {
-    res
-      .status(401)
-      .json({ message: 'Unauthorized', error: 'User UUID not found' })
-    return
-  }
-
-  const result = await videogameService.addGameToList(gameId, userUuid, name)
-  if (result.alreadyInTheList) {
-    res.status(409).json({ message: 'Game already in the list' })
-    return
-  }
-
-  res
-    .status(200)
-    .json({ message: 'Game successfully added to your list', data: result })
-}
-
 const getSteamgameDetailsById = async (req: Request, res: Response) => {
   const { appid } = req.params
   if (!appid) {
@@ -66,86 +35,6 @@ const getSteamgameDetailsById = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Game fetched successfully', data: response })
 }
 
-const getUserWishlist = async (req: Request, res: Response) => {
-  const userUuid = (req as any).user?.id
-  if (!userUuid) {
-    res
-      .status(401)
-      .json({ message: 'Unauthorized', error: 'User UUID not found' })
-    return
-  }
-
-  console.log('User UUID', userUuid)
-
-  const userWishlist = await videogameService.getUserWishlist(userUuid)
-  if (!userWishlist) {
-    res.status(404).json({ message: 'Wishlist not found' })
-    return
-  }
-
-  res
-    .status(200)
-    .json({ message: 'Wishlist fetched successfully', data: userWishlist })
-}
-
-const addReview = async (req: Request, res: Response) => {
-  const { gameId, name, rating, review } = req.body
-
-  console.log('review to add', req.body)
-
-  if (!gameId || !name || !rating || !review) {
-    res.status(400).json({ message: 'Some fields are missing' })
-    return
-  }
-
-  const userUuid = (req as any).user?.id
-  if (!userUuid) {
-    res
-      .status(401)
-      .json({ message: 'Unauthorized', error: 'User UUID not found' })
-    return
-  }
-
-  const username = (req as any).user?.name
-  if (!username || username === '') {
-    res
-      .status(401)
-      .json({ message: 'Unauthorized', error: 'Username not found' })
-    return
-  }
-
-  console.log('User UUID', userUuid, 'Username', username)
-
-  const result = await videogameService.addReview(
-    userUuid,
-    username,
-    gameId,
-    name,
-    rating,
-    review
-  )
-  if (result.alreadyReviewed) {
-    res.status(409).json({ message: 'You already reviewed this game' })
-    return
-  }
-
-  res.status(200).json({ message: 'Review added successfully', data: result })
-}
-
-const getReviewsByGameId = async (req: Request, res: Response) => {
-  const { gameId } = req.params
-
-  if (!gameId) {
-    res.status(400).json({ message: 'GameId is required' })
-    return
-  }
-
-  const reviews = await videogameService.getReviewsByGameId(Number(gameId))
-  res
-    .status(200)
-    .json({ message: 'Reviews fetched successfully', data: reviews })
-}
-
 const searchGamesByName = async (req: Request, res: Response) => {
   const { name } = req.query
 
@@ -160,22 +49,6 @@ const searchGamesByName = async (req: Request, res: Response) => {
 
 export default {
   getGames,
-  getUserGamelists,
-  addGameToList,
   getSteamgameDetailsById,
-  getUserWishlist,
-  addReview,
-  getReviewsByGameId,
-  searchGamesByName
+  searchGamesByName,
 }
-
-// const searchGamesByName = async (req: Request, res: Response) => {
-//   try {
-//     const { name } = req.query
-//     const games = await videogameService.searchGamesByName(name as string)
-//     res.status(200).json(games)
-//   } catch (error) {
-//     console.error('Error searching games:', error)
-//     res.status(500).json({ message: 'Internal server error' })
-//   }
-// }

@@ -41,7 +41,7 @@ const GameDetailsPage = () => {
   const fetchGameReviews = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/videogame/games/reviews/${id}`,
+        `http://localhost:4000/videogame/reviews/${id}`,
         { withCredentials: true }
       );
       const { data, message } = response.data;
@@ -56,7 +56,7 @@ const GameDetailsPage = () => {
   const handleAddReview = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/videogame/games/review`,
+        `http://localhost:4000/videogame/reviews`,
         { rating, review, gameId: id, name: game.name },
         { withCredentials: true }
       );

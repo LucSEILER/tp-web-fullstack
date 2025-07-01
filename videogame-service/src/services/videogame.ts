@@ -86,13 +86,6 @@ export const fetchSteamGameDetailsBatch = async (
   return results.filter((g) => g !== null) as SteamGameDetail[]
 }
 
-const getUserGamelists = async () => {
-  const userGamelists = await await db.query(
-    'SELECT id, user_id, game_id, name FROM videogame_userlist'
-  )
-  return userGamelists.rows || []
-}
-
 const getSteamgameDetailsById = async (appid: number) => {
   const response = await axios.get(
     `https://store.steampowered.com/api/appdetails?appids=${appid}`
@@ -101,68 +94,6 @@ const getSteamgameDetailsById = async (appid: number) => {
   const gameDetails = response.data[responseAppId]
 
   return gameDetails
-}
-
-const addGameToList = async (gameId: number, userId: number, name: string) => {
-  const existingInTheList = await db.query(
-    'SELECT id FROM videogame_userlist WHERE game_id = $1 AND user_id = $2',
-    [gameId, userId]
-  )
-
-  if (existingInTheList.rows.length > 0) {
-    return { alreadyInTheList: true, id: existingInTheList.rows[0].id }
-  }
-  
-  const result = await db.query(
-    'INSERT INTO videogame_userlist (game_id, user_id, name) VALUES ($1, $2, $3) RETURNING id, game_id, user_id, name',
-    [gameId, userId, name]
-  )
-  return result.rows[0]
-}
-
-const getUserWishlist = async (userUuid: string) => {
-  const result = await db.query(
-    'SELECT id, game_id, name FROM videogame_userlist WHERE user_id = $1',
-    [userUuid]
-  )
-
-  if (result.rows.length === 0) {
-    return []
-  }
-
-  const gameIds = result.rows.map((r) => r.game_id)
-  const games = await fetchSteamGameDetailsBatch(gameIds)
-
-  return games
-}
-
-const addReview = async (userUuid: string, username: string, gameId: number, name: string, rating: number, review: string) => {
-  const existingReview = await db.query(
-    'SELECT id FROM game_reviews WHERE game_id = $1 AND user_id = $2',
-    [gameId, userUuid]
-  )
-
-  if (existingReview.rows.length > 0) {
-    return { alreadyReviewed: true, id: existingReview.rows[0].id }
-  }
-  
-  const result = await db.query(
-    'INSERT INTO game_reviews (user_id, username, game_id, name, rating, review) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, user_id, username, game_id, name, rating, review',
-    [userUuid, username, gameId, name, rating, review]
-  )
-
-  console.log('result of add review', result.rows)
-
-  return result.rows[0]
-}
-
-const getReviewsByGameId = async (gameId: number) => {
-  const result = await db.query(
-    'SELECT id, user_id, username, game_id, name, rating, review FROM game_reviews WHERE game_id = $1',
-    [gameId]
-  )
-
-  return result.rows
 }
 
 const searchGamesByName = async (name: string) => {
@@ -181,11 +112,6 @@ const searchGamesByName = async (name: string) => {
 
 export default {
   getGames,
-  getUserGamelists,
-  addGameToList,
   getSteamgameDetailsById,
-  getUserWishlist,
-  addReview,
-  getReviewsByGameId,
   searchGamesByName
 }

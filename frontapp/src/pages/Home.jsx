@@ -46,7 +46,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUserWishlist = async () => {
       try {
-        const response = await api.get("/videogame/games/wichlist/my", {
+        const response = await api.get("/videogame/wishlist/my", {
           withCredentials: true,
         });
         const { data, message } = response.data;
