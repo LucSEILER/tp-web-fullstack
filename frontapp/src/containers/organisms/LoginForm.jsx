@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Input from "../../components/atoms/Input";
 import Button from "../atoms/Button";
 import api from "../../helpers/request";
-import { toaster } from "../../components/ui/toaster";
+import { Link } from "react-router-dom";
+import Card from "../../components/molecules/Card";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -21,11 +22,6 @@ const LoginForm = () => {
           const responseData = response.data.data;
           const token = responseData.token;
           localStorage.setItem("idToken", token);
-          // toaster.create({
-          //   message: `Login successfull, user: ${responseData.user.name}`,
-          //   type: "success",
-          //   duration: 3000,
-          // });
           window.location.href = "/";
         })
         .catch((error) => {
@@ -37,33 +33,38 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col gap-4">
-      <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <Card title="Login">
+      <form onSubmit={handleLogin} className="flex flex-col gap-4">
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <Input
-        type="email"
-        label="Email"
-        value={email}
-        required
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <Input
+          type="email"
+          label="Email"
+          value={email}
+          required
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <Input
-        type="password"
-        label="Password"
-        value={password}
-        required
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <Input
+          type="password"
+          label="Password"
+          value={password}
+          required
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <Button
-        label="Login"
-        onClick={handleLogin}
-        backgroundColor="buttonPrimary"
-        size="xl"
-      />
-    </form>
+        <Link to="/register" className="underline text-sm textPrimary">
+          Don't have an account ?
+        </Link>
+
+        <Button
+          label="Login"
+          onClick={handleLogin}
+          backgroundColor="buttonPrimary"
+          size="xl"
+        />
+      </form>
+    </Card>
   );
 };
 

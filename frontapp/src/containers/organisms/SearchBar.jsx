@@ -19,8 +19,8 @@ const SteamSearchBar = () => {
           params: { name: search },
         }
       );
-      const { data, message } = response.data;
-      console.log(response);
+      const { data } = response.data;
+
       setGames(data || []);
     } catch (error) {
       console.error("Erreur lors de la recherche Steam:", error);

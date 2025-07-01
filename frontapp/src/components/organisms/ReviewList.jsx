@@ -8,7 +8,7 @@ const ReviewList = ({ reviews = [] }) => {
   }
 
   return (
-    <div className="space-y-4 mb-10">
+    <div className="max-w-5xl mx-auto space-y-4 mb-10">
       {reviews.map((review) => (
         <div
           key={review.id}

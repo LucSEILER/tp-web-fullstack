@@ -1,4 +1,3 @@
-// App.tsx
 import "./App.css";
 import LoginForm from "./containers/organisms/LoginForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";

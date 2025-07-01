@@ -60,7 +60,7 @@ const GameDetailsPage = () => {
         { rating, review, gameId: id, name: game.name },
         { withCredentials: true }
       );
-      const { data, message } = response.data;
+      const { message } = response.data;
 
       setMessage(message);
 
@@ -91,7 +91,7 @@ const GameDetailsPage = () => {
 
       <ReviewList reviews={gameReviews} />
 
-      <div className="mt-8">
+      <div className="max-w-5xl mx-auto mt-8">
         <h3 className="text-xl font-semibold mb-4">Add Your Review</h3>
 
         <div className="flex flex-col gap-4">
