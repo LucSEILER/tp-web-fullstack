@@ -7,6 +7,7 @@ import { wishlistRoutes } from './routes/wishlist'
 import cookiesParser from 'cookie-parser'
 import YAML from 'yamljs'
 import swaggerUI from 'swagger-ui-express'
+import { initDBTables as initDB } from './config/db'
 
 dotenv.config()
 
@@ -20,7 +21,7 @@ setupLogging(app)
 app.use(cookiesParser())
 app.use(express.json())
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.get('/', (req: any, res: any) => {
   res.send({ message: 'Welcome to videogame-service' })
@@ -30,6 +31,11 @@ app.use('/games', videogameRoutes)
 app.use('/reviews', reviewsRoutes)
 app.use('/wishlist', wishlistRoutes)
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`API Gateway is running at http://localhost:${port}`)
-})
+const startServer = async () => {
+  await initDB()
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Running on http://0.0.0.0:${port}`)
+  })
+}
+
+startServer()
