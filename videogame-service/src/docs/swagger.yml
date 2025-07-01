@@ -153,6 +153,24 @@ paths:
           description: Unauthorized
         404:
           description: Wishlist not found
+  
+  /wishlist/{gameId}:
+    delete:
+      tags: [Wishlist]
+      summary: Remove a game from the wishlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Game successfully removed
+        401:
+          description: Unauthorized
 
 components:
   securitySchemes:

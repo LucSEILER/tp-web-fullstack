@@ -1,7 +1,7 @@
 import db from '../config/db'
 import { fetchSteamGameDetailsBatch } from './videogame'
 
-const getUserWishlist = async (userUuid: string) => {
+const getUserPlaylist = async (userUuid: string) => {
   const result = await db.query(
     'SELECT id, game_id, name FROM videogame_userlist WHERE user_id = $1',
     [userUuid]
@@ -34,4 +34,27 @@ const addGameToList = async (gameId: number, userId: number, name: string) => {
   return result.rows[0]
 }
 
-export default { getUserWishlist, addGameToList }
+const removeGameFromList = async (gameId: number, userId: number) => {
+  const { rows: existingRows } = await db.query(
+    'SELECT id FROM videogame_userlist WHERE game_id = $1 AND user_id = $2',
+    [gameId, userId]
+  )
+
+  if (existingRows.length === 0) {
+    return { error: 'not_found' }
+  }
+
+  const { rows: deletedRows } = await db.query(
+    'DELETE FROM videogame_userlist WHERE game_id = $1 AND user_id = $2 RETURNING id',
+    [gameId, userId]
+  )
+
+  if (deletedRows.length === 0) {
+    return { error: 'delete_failed' }
+  }
+
+  return { success: true }
+}
+  
+  
+export default { getUserPlaylist, addGameToList, removeGameFromList }
