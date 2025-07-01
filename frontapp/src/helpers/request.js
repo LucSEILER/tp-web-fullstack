@@ -9,17 +9,15 @@ const api = axios.create({
   },
 });
 
-// api.interceptors.response.use(
-//   (response) => response, // Laisse passer la réponse si tout va bien
-//   (error) => {
-//     // Si erreur 401, on redirige vers /login
-//     if (error.response && error.response.status === 401) {
-//       window.location.href = "/login";
-//     }
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.location.href = "/login";
+    }
 
-//     // Tu peux aussi afficher une notification ici
-//     return Promise.reject(error);
-//   }
-// );
+    return Promise.reject(error);
+  }
+);
 
 export default api;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Input from "../../components/atoms/Input";
 import Button from "../atoms/Button";
 import api from "../../helpers/request";
+import { toaster } from "../../components/ui/toaster";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +21,11 @@ const LoginForm = () => {
           const responseData = response.data.data;
           const token = responseData.token;
           localStorage.setItem("idToken", token);
+          // toaster.create({
+          //   message: `Login successfull, user: ${responseData.user.name}`,
+          //   type: "success",
+          //   duration: 3000,
+          // });
           window.location.href = "/";
         })
         .catch((error) => {

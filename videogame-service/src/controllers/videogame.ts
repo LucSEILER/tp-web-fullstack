@@ -45,7 +45,7 @@ const addGameToList = async (req: Request, res: Response) => {
 
   res
     .status(200)
-    .json({ message: 'Game successfully added to the list', data: result })
+    .json({ message: 'Game successfully added to your list', data: result })
 }
 
 const getSteamgameDetailsById = async (req: Request, res: Response) => {
@@ -54,6 +54,8 @@ const getSteamgameDetailsById = async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Appid is required' })
     return
   }
+
+  console.log('Looking for game with appid', appid)
 
   const response = await videogameService.getSteamgameDetailsById(Number(appid))
   if (!response || response?.success === false) {
@@ -86,12 +88,85 @@ const getUserWishlist = async (req: Request, res: Response) => {
     .json({ message: 'Wishlist fetched successfully', data: userWishlist })
 }
 
+const addReview = async (req: Request, res: Response) => {
+  const { gameId, name, rating, review } = req.body
+
+  console.log('review to add', req.body)
+
+  if (!gameId || !name || !rating || !review) {
+    res.status(400).json({ message: 'Some fields are missing' })
+    return
+  }
+
+  const userUuid = (req as any).user?.id
+  if (!userUuid) {
+    res
+      .status(401)
+      .json({ message: 'Unauthorized', error: 'User UUID not found' })
+    return
+  }
+
+  const username = (req as any).user?.name
+  if (!username || username === '') {
+    res
+      .status(401)
+      .json({ message: 'Unauthorized', error: 'Username not found' })
+    return
+  }
+
+  console.log('User UUID', userUuid, 'Username', username)
+
+  const result = await videogameService.addReview(
+    userUuid,
+    username,
+    gameId,
+    name,
+    rating,
+    review
+  )
+  if (result.alreadyReviewed) {
+    res.status(409).json({ message: 'You already reviewed this game' })
+    return
+  }
+
+  res.status(200).json({ message: 'Review added successfully', data: result })
+}
+
+const getReviewsByGameId = async (req: Request, res: Response) => {
+  const { gameId } = req.params
+
+  if (!gameId) {
+    res.status(400).json({ message: 'GameId is required' })
+    return
+  }
+
+  const reviews = await videogameService.getReviewsByGameId(Number(gameId))
+  res
+    .status(200)
+    .json({ message: 'Reviews fetched successfully', data: reviews })
+}
+
+const searchGamesByName = async (req: Request, res: Response) => {
+  const { name } = req.query
+
+  if (!name) {
+    res.status(400).json({ message: 'Name is required' })
+    return
+  }
+
+  const games = await videogameService.searchGamesByName(name as string)
+  res.status(200).json({ message: 'Games fetched successfully', data: games })
+}
+
 export default {
   getGames,
   getUserGamelists,
   addGameToList,
   getSteamgameDetailsById,
   getUserWishlist,
+  addReview,
+  getReviewsByGameId,
+  searchGamesByName
 }
 
 // const searchGamesByName = async (req: Request, res: Response) => {
