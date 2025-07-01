@@ -22,10 +22,6 @@ const RegisterForm = () => {
         .then((response) => {
           const responseData = response.data.data;
           console.log("Response data: ", responseData);
-          // const token = responseData.token;
-          // const user = responseData.user;
-          // console.log("Login successfull, user: ", user);
-          // localStorage.setItem("idToken", token);
           window.location.href = "/login";
         })
         .catch((error) => {

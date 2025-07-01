@@ -79,12 +79,12 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-center text-xl font-bold mb-4">
-        Recherche de jeux Steam
+        Search for a Steam game...
       </h1>
       <SteamSearchBar />
 
       {isVideoLoading || isUserLoading ? (
-        <p className="text-center text-gray-500 mt-4">Chargement...</p>
+        <p className="text-center text-gray-500 mt-4">Loading...</p>
       ) : (
         <>
           <VideogameList gameList={videogames} userWishlist={userWishlist} />

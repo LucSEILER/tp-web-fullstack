@@ -13,9 +13,8 @@ const MyList = () => {
         const response = await api.get("/videogame/games/wichlist/my", {
           withCredentials: true,
         });
+        const { data, message } = response.data;
 
-          const { data, message } = response.data;
-          console.log(data)
         setWishlistGames(data);
         setMessage(message);
       } catch (error) {
@@ -32,13 +31,13 @@ const MyList = () => {
   return (
     <div className="p-4">
       <h1 className="text-center text-2xl font-bold mb-4">
-        Ma liste de souhaits
+        My playlist
       </h1>
 
       {isLoading ? (
-        <p className="text-center text-gray-500">Chargement...</p>
+        <p className="text-center text-gray-500">Loading...</p>
       ) : wishlistGames.length === 0 ? (
-        <p className="text-center text-gray-500">Aucun jeu dans votre liste.</p>
+        <p className="text-center text-gray-500">Your playlist is empty.</p>
       ) : (
         <VideogameList
           gameList={wishlistGames}

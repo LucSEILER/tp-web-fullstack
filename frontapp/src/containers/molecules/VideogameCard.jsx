@@ -5,7 +5,7 @@ import { toaster } from "../../components/ui/toaster";
 import { Link } from "react-router-dom";
 
 const VideogameCard = ({ game, isAdded, ...props }) => {
-  const [userGames, setUserGames] = useState([]);
+  const [added, setAdded] = useState(isAdded);
   const [message, setMessage] = useState("");
 
   const handleAddToWishlist = async () => {
@@ -17,7 +17,7 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
       );
 
       const { message } = response.data;
-      setUserGames((prev) => [...prev, game.appid]);
+      setAdded(true);
       setMessage(message);
 
       toaster.create({
@@ -39,9 +39,9 @@ const VideogameCard = ({ game, isAdded, ...props }) => {
       <Button
         onClick={handleAddToWishlist}
         className="mt-auto"
-        label={isAdded ? "✔ Added" : "Add to wishlist"}
+        label={added ? "✔ To your playlist" : "Add to wishlist"}
         backgroundColor="buttonPrimary"
-        disabled={isAdded}
+        disabled={added}
         {...props}
       />
     </div>
