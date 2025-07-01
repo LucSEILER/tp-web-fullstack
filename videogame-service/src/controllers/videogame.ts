@@ -7,9 +7,9 @@ const getGames = async (req: Request, res: Response) => {
   const limitInt = limit && typeof limit === 'string' ? parseInt(limit, 10) : 10
 
   const response = await videogameService.getGames(pageInt, limitInt)
-
   if (!response || response.results.length === 0) {
     res.status(404).json({ message: 'No games found', data: [] })
+    return
   }
 
   res

@@ -30,9 +30,7 @@ const MyList = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">
-        My playlist
-      </h1>
+      <h1 className="text-center text-2xl font-bold mb-4">My playlist</h1>
 
       {isLoading ? (
         <p className="text-center text-gray-500">Loading...</p>
@@ -42,6 +40,7 @@ const MyList = () => {
         <VideogameList
           gameList={wishlistGames}
           userWishlist={wishlistGames.map((vg) => vg.game_id)}
+          mode="wishlist"
         />
       )}
     </div>

@@ -53,9 +53,12 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Link to="/register" className="underline text-sm textPrimary">
+        <p className="text-sm textPrimary flex gap-2">
           Don't have an account ?
-        </Link>
+          <Link to="/register" className="underline text-sm textPrimary">
+            Register
+          </Link>
+        </p>
 
         <Button
           label="Login"

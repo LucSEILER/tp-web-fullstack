@@ -62,9 +62,12 @@ const RegisterForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Link className="underline text-sm textPrimary" to="/login">
-          Already have an account ? Login
-        </Link>
+        <p className="text-sm textPrimary flex gap-2">
+          Already have an account ?
+          <Link to="/login" className="underline text-sm textPrimary">
+            Log In
+          </Link>
+        </p>
 
         <Button
           label="Register"

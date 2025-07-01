@@ -56,5 +56,4 @@ const removeGameFromList = async (gameId: number, userId: number) => {
   return { success: true }
 }
   
-  
 export default { getUserPlaylist, addGameToList, removeGameFromList }

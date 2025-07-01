@@ -87,7 +87,11 @@ const Home = () => {
         <p className="text-center text-gray-500 mt-4">Loading...</p>
       ) : (
         <>
-          <VideogameList gameList={videogames} userWishlist={userWishlist} />
+          <VideogameList
+            gameList={videogames}
+            userWishlist={userWishlist}
+            mode="home"
+          />
 
           {hasMore && (
             <div className="flex justify-center mt-6">

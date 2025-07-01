@@ -41,7 +41,7 @@ const SteamSearchBar = () => {
       <input
         type="text"
         value={query}
-        placeholder="Rechercher un jeu Steam..."
+        placeholder="Batman, Cyberpunk, Hitman..."
         onChange={(e) => setQuery(e.target.value)}
         className="w-full p-2 border rounded shadow"
       />
