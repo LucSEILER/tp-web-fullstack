@@ -1,19 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    axios
-      .post("http://localhost:4000/users/auth/logout", {
-        withCredentials: true,
-      })
-      .then(() => {
-        // localStorage.removeItem("idToken");
-        navigate("/login");
-      })
-      .catch((error) => console.error("Logout error:", error));
+    if (localStorage.getItem("idToken")) {
+      localStorage.removeItem("idToken");
+      navigate("/login");
+    }
   };
 
   return (
@@ -24,9 +18,6 @@ const Navbar = () => {
           className="text-xl font-bold text-blue-400 hover:text-blue-300"
         >
           🎮 Steam Gameradar
-        </Link>
-        <Link to="/" className="hover:text-blue-300">
-          Home
         </Link>
         <Link to="/wishlist" className="hover:text-blue-300">
           My Wishlist

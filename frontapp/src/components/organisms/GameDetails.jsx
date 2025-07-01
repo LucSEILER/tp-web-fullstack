@@ -79,12 +79,8 @@ const GameDetails = ({ game }) => {
 
       {game.developers && game.developers.length > 0 && (
         <div className="mt-4">
-          <strong className="text-lg">Developers:</strong>
-          <ul className="ml-6">
-            {game.developers.map((developer) => (
-              <li key={developer.id}>{developer.name}</li>
-            ))}
-          </ul>
+          <strong className="text-lg">Developers:</strong>{" "}
+          {game.developers.join(", ")}
         </div>
       )}
 
