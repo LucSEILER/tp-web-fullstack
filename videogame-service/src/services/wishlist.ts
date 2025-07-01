@@ -1,13 +1,6 @@
 import db from '../config/db'
 import { fetchSteamGameDetailsBatch } from './videogame'
 
-const getUserGamelists = async () => {
-  const userGamelists = await await db.query(
-    'SELECT id, user_id, game_id, name FROM videogame_userlist'
-  )
-  return userGamelists.rows || []
-}
-
 const getUserWishlist = async (userUuid: string) => {
   const result = await db.query(
     'SELECT id, game_id, name FROM videogame_userlist WHERE user_id = $1',
@@ -41,4 +34,4 @@ const addGameToList = async (gameId: number, userId: number, name: string) => {
   return result.rows[0]
 }
 
-export default { getUserGamelists, getUserWishlist, addGameToList }
+export default { getUserWishlist, addGameToList }

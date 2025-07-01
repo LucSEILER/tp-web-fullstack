@@ -1,37 +1,107 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Videogame API
-  description: API for managing videogames, user lists, reviews, and wishlist
+  title: Game API
+  description: API for managing games, reviews, and wishlists
   version: 1.0.0
 
 servers:
-  - url: http://localhost:4000
-    description: Local server
+  - url: http://localhost:4000/videogame
+
+tags:
+  - name: Reviews
+  - name: Games
+  - name: Wishlist
 
 paths:
-  /videogame/games:
+  /reviews/{gameId}:
     get:
-      summary: Get paginated videogames
+      tags: [Reviews]
+      summary: Get reviews for a specific game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of reviews retrieved
+        400:
+          description: Missing gameId
+
+  /reviews:
+    post:
+      tags: [Reviews]
+      summary: Add a review for a game
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [gameId, name, rating, review]
+              properties:
+                gameId:
+                  type: integer
+                name:
+                  type: string
+                rating:
+                  type: number
+                review:
+                  type: string
+      responses:
+        200:
+          description: Review added successfully
+        400:
+          description: Missing fields
+        401:
+          description: Unauthorized
+        409:
+          description: Already reviewed
+
+  /games:
+    get:
+      tags: [Games]
+      summary: Get a list of games
       parameters:
         - name: page
           in: query
           schema:
             type: integer
-            default: 1
         - name: limit
           in: query
           schema:
             type: integer
-            default: 10
       responses:
-        '200':
-          description: Games fetched successfully
-        '404':
+        200:
+          description: List of games retrieved
+        404:
           description: No games found
 
-  /videogame/games/search:
+  /games/details/{appid}:
     get:
-      summary: Search games by name
+      tags: [Games]
+      summary: Get game details by Steam appid
+      parameters:
+        - name: appid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Game details retrieved
+        400:
+          description: Missing appid
+        404:
+          description: Game not found
+
+  /games/search:
+    get:
+      tags: [Games]
+      summary: Search for games by name
       parameters:
         - name: name
           in: query
@@ -39,31 +109,15 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: Games fetched successfully
-        '400':
+        200:
+          description: Search results
+        400:
           description: Name is required
 
-  /videogame/games/details/{appid}:
-    get:
-      summary: Get Steam game details by AppID
-      parameters:
-        - name: appid
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Game fetched successfully
-        '400':
-          description: Appid is required
-        '404':
-          description: Game not found
-
-  /videogame/games/review:
+  /wishlist:
     post:
-      summary: Add a review
+      tags: [Wishlist]
+      summary: Add a game to the wishlist
       security:
         - bearerAuth: []
       requestBody:
@@ -71,69 +125,33 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReviewInput'
+              type: object
+              required: [gameId, name]
+              properties:
+                gameId:
+                  type: integer
+                name:
+                  type: string
       responses:
-        '200':
-          description: Review added successfully
-        '400':
-          description: Some fields are missing
-        '401':
+        200:
+          description: Game successfully added
+        401:
           description: Unauthorized
-        '409':
-          description: Already reviewed
+        409:
+          description: Game already in the list
 
-  /videogame/games/review/{gameId}:
+  /wishlist/my:
     get:
-      summary: Get reviews for a game
-      parameters:
-        - name: gameId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Reviews fetched successfully
-        '400':
-          description: GameId is required
-
-  /videogame/gamelists:
-    get:
-      summary: Get gamelists (global)
-      responses:
-        '200':
-          description: Gamelists fetched successfully
-
-  /videogame/gamelists/add:
-    post:
-      summary: Add game to a user's list
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddGameInput'
-      responses:
-        '200':
-          description: Game added to list
-        '401':
-          description: Unauthorized
-        '409':
-          description: Game already in list
-
-  /videogame/wishlist:
-    get:
-      summary: Get user wishlist
+      tags: [Wishlist]
+      summary: Get the authenticated user's wishlist
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: Wishlist fetched successfully
-        '401':
+        200:
+          description: Wishlist retrieved
+        401:
           description: Unauthorized
-        '404':
+        404:
           description: Wishlist not found
 
 components:
@@ -142,32 +160,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
-  schemas:
-    ReviewInput:
-      type: object
-      required:
-        - gameId
-        - name
-        - rating
-        - review
-      properties:
-        gameId:
-          type: string
-        name:
-          type: string
-        rating:
-          type: integer
-        review:
-          type: string
-
-    AddGameInput:
-      type: object
-      required:
-        - gameId
-        - name
-      properties:
-        gameId:
-          type: string
-        name:
-          type: string

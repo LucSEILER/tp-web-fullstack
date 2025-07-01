@@ -1,13 +1,6 @@
 import { Request, Response } from 'express'
 import wishlistService from '../services/wishlist'
 
-const getUserGamelists = async (req: Request, res: Response) => {
-  const userGamelists = await wishlistService.getUserGamelists()
-  res
-    .status(200)
-    .json({ message: 'Gamelists fetched successfully', data: userGamelists })
-}
-
 const getUserWishlist = async (req: Request, res: Response) => {
   const userUuid = (req as any).user?.id
   if (!userUuid) {
@@ -54,4 +47,4 @@ const addGameToList = async (req: Request, res: Response) => {
     .json({ message: 'Game successfully added to your list', data: result })
 }
 
-export default { getUserWishlist, getUserGamelists, addGameToList }
+export default { getUserWishlist, addGameToList }

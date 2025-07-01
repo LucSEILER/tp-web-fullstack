@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/users/me", {
+          withCredentials: true,
+        });
+        const { data, message } = response;
+
+        setUsername(data.name);
+        setMessage(message);
+      } catch (err) {
+        console.error("Failed to fetch me", err);
+        // navigate("/login");
+      }
+    };
+
+    fetchMe();
+  }, []);
 
   const handleLogout = () => {
     if (localStorage.getItem("idToken")) {
@@ -23,12 +46,15 @@ const Navbar = () => {
           My Wishlist
         </Link>
       </div>
-      <button
-        onClick={handleLogout}
-        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
-      >
-        Logout
-      </button>
+      <div className="flex items-center space-x-4">
+        <span>{username}</span>
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   );
 };
