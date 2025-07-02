@@ -17,6 +17,7 @@ const config = defineConfig({
         primary: "#2C2C2C",
         buttonPrimary: "#AD3215",
         textPrimary: "#D5D8E8",
+        textLink: "#AD3215",
       },
     },
     keyframes: {

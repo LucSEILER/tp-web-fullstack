@@ -64,7 +64,7 @@ const RegisterForm = () => {
 
         <p className="text-sm textPrimary flex gap-2">
           Already have an account ?
-          <Link to="/login" className="underline text-sm textPrimary">
+          <Link to="/login" className="underline text-sm textLink">
             Log In
           </Link>
         </p>

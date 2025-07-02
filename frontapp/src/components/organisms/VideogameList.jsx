@@ -8,7 +8,7 @@ const VideogameList = ({
 }) => {
   return (
     <>
-      <h1>Video Game List</h1>
+      <h1>{mode === "home" ? "Popular" : ""}</h1>
 
       {isLoading ? (
         <p>Loading...</p>
