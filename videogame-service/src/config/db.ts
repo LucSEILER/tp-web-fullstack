@@ -1,7 +1,7 @@
 import { Pool } from 'pg'
 import dotenv from 'dotenv'
-// import fs from 'fs'
-// import path from 'path'
+import fs from 'fs'
+import path from 'path'
 
 dotenv.config()
 
@@ -13,17 +13,17 @@ const pool = new Pool({
   port: 5432,
 })
 
-// export const initDBTables = async () => {
-//   try {
-//     const sqlPath = path.join(__dirname, 'sql', 'init.sql')
-//     const sql = fs.readFileSync(sqlPath, 'utf8')
+export const initDBTables = async () => {
+  try {
+    const sqlPath = path.join(__dirname, 'sql', 'init.sql')
+    const sql = fs.readFileSync(sqlPath, 'utf8')
 
-//     await pool.query(sql)
-//     console.log('✅ Tables and default data initialized successfully')
-//   } catch (error) {
-//     console.error('❌ Failed to initialize tables:', error)
-//     throw error
-//   }
-// }
+    await pool.query(sql)
+    console.log('✅ Tables and default data initialized successfully')
+  } catch (error) {
+    console.error('❌ Failed to initialize tables:', error)
+    throw error
+  }
+}
 
 export default pool

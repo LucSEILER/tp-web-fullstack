@@ -46,7 +46,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUserWishlist = async () => {
       try {
-        const response = await api.get("/videogame/games/wichlist/my", {
+        const response = await api.get("/videogame/wishlist/my", {
           withCredentials: true,
         });
         const { data, message } = response.data;
@@ -79,15 +79,19 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-center text-xl font-bold mb-4">
-        Recherche de jeux Steam
+        Search for a Steam game...
       </h1>
       <SteamSearchBar />
 
       {isVideoLoading || isUserLoading ? (
-        <p className="text-center text-gray-500 mt-4">Chargement...</p>
+        <p className="text-center text-gray-500 mt-4">Loading...</p>
       ) : (
         <>
-          <VideogameList gameList={videogames} userWishlist={userWishlist} />
+          <VideogameList
+            gameList={videogames}
+            userWishlist={userWishlist}
+            mode="home"
+          />
 
           {hasMore && (
             <div className="flex justify-center mt-6">

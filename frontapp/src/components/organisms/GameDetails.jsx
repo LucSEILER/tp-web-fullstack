@@ -1,7 +1,43 @@
+import { useState } from "react";
+import axios from "axios";
+import { toaster } from "../ui/toaster";
+import Button from "../../containers/atoms/Button";
+
 const GameDetails = ({ game }) => {
+  const [added, setAdded] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleAddToWishlist = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/videogame/games/wishlist",
+        { gameId: game.steam_appid, name: game.name },
+        { withCredentials: true }
+      );
+      const { message } = response.data;
+      
+      setAdded(true);
+      setMessage(message);
+
+      toaster.create({
+        type: "success",
+        description: message,
+      });
+    } catch (error) {
+      console.error("Error adding videogame to wishlist:", error);
+    }
+  };
+
   return (
-    <div className="max-w-5xl mx-auto p-4 text-gray-800">
-      <h1 className="text-4xl font-bold mb-2">{game.name}</h1>
+    <div className="max-w-5xl text-left mx-auto p-4 textPrimary">
+      <h1 className="text-4xl font-bold mb-2 text-center">{game.name}</h1>
+      <Button
+        onClick={handleAddToWishlist}
+        className="mt-auto"
+        label={added ? "✔ To your playlist" : "Add to wishlist"}
+        backgroundColor="buttonPrimary"
+        disabled={added}
+      />
       <img
         src={game.header_image}
         alt={game.name}
@@ -25,7 +61,7 @@ const GameDetails = ({ game }) => {
       {game.genres && (
         <div className="mt-4">
           <strong className="text-lg">Genres:</strong>
-          <ul className="list-disc ml-6">
+          <ul className="">
             {game.genres.map((genre) => (
               <li key={genre.id}>{genre.description}</li>
             ))}
@@ -43,12 +79,8 @@ const GameDetails = ({ game }) => {
 
       {game.developers && game.developers.length > 0 && (
         <div className="mt-4">
-          <strong className="text-lg">Developers:</strong>
-          <ul className="list-disc ml-6">
-            {game.developers.map((developer) => (
-              <li key={developer.id}>{developer.name}</li>
-            ))}
-          </ul>
+          <strong className="text-lg">Developers:</strong>{" "}
+          {game.developers.join(", ")}
         </div>
       )}
 
@@ -69,20 +101,6 @@ const GameDetails = ({ game }) => {
         )}
       </div>
 
-      {game.metacritic && (
-        <div className="mt-4">
-          <strong className="text-lg">Metacritic:</strong>{" "}
-          <a
-            href={game.metacritic.url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-600 underline"
-          >
-            {game.metacritic.score}/100
-          </a>
-        </div>
-      )}
-
       <div className="mt-6">
         <strong className="text-lg">PC Requirements:</strong>
         <div
@@ -101,17 +119,21 @@ const GameDetails = ({ game }) => {
         <p className="text-sm mt-1">{game.linux_requirements.minimum}</p>
       </div>
 
-      {game.screenshots && game.screenshots.length > 0 && (
-        <div className="mt-6">
-          <strong className="text-lg">Screenshots:</strong>
-          <div className="flex overflow-x-auto gap-2 mt-2">
+      {game.screenshots?.length > 0 && (
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold mb-4">Screenshots</h3>
+          <div className="flex overflow-x-auto space-x-4 pb-2 scrollbar-thin scrollbar-thumb-gray-400">
             {game.screenshots.map((screenshot) => (
-              <img
+              <div
                 key={screenshot.id}
-                src={screenshot.path_thumbnail}
-                alt={`Screenshot ${screenshot.id}`}
-                className="w-48 h-auto rounded shadow"
-              />
+                className="flex-shrink-0 transform transition duration-300 hover:scale-105"
+              >
+                <img
+                  src={screenshot.path_thumbnail}
+                  alt={`Screenshot ${screenshot.id}`}
+                  className="w-56 h-auto rounded-lg shadow-lg border border-gray-200"
+                />
+              </div>
             ))}
           </div>
         </div>

@@ -19,8 +19,8 @@ const SteamSearchBar = () => {
           params: { name: search },
         }
       );
-      const { data, message } = response.data;
-      console.log(response);
+      const { data } = response.data;
+
       setGames(data || []);
     } catch (error) {
       console.error("Erreur lors de la recherche Steam:", error);
@@ -41,15 +41,15 @@ const SteamSearchBar = () => {
       <input
         type="text"
         value={query}
-        placeholder="Rechercher un jeu Steam..."
+        placeholder="Batman, Cyberpunk, Hitman..."
         onChange={(e) => setQuery(e.target.value)}
         className="w-full p-2 border rounded shadow"
       />
 
-      {loading && <p className="mt-2 text-gray-500">Recherche en cours...</p>}
+      {loading && <p className="mt-2 text-gray-500">Loading...</p>}
 
       {!loading && games.length > 0 && (
-        <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ul className="mt-4 flex flex-col gap-2">
           {games.map((game) => (
             <li
               key={game.appid}
@@ -57,20 +57,17 @@ const SteamSearchBar = () => {
             >
               <Link
                 to={`/games/${game.appid}`}
-                // href={`https://store.steampowered.com/app/${game.appid}`}
-                // target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col h-full"
+                className="flex"
               >
                 <img
                   src={game.logo}
                   alt={game.name}
-                  className="w-full h-32 object-cover"
+                  className="w-16 object-cover"
                 />
                 <div className="p-4 flex-1 flex items-center justify-center text-center">
-                  <h3 className="text-gray-800 dark:text-gray-100 font-semibold text-lg">
+                  <h4 className="text-gray-800 dark:text-gray-100 font-semibold text-lg">
                     {game.name}
-                  </h3>
+                  </h4>
                 </div>
               </Link>
             </li>
@@ -79,7 +76,7 @@ const SteamSearchBar = () => {
       )}
 
       {!loading && query && games.length === 0 && (
-        <p className="mt-2 text-gray-500">Aucun jeu trouvé.</p>
+        <p className="mt-2 text-gray-500">No results found.</p>
       )}
     </div>
   );

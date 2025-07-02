@@ -17,6 +17,16 @@ const getUserById = async (req: Request, res: Response) => {
   }
 }
 
+const getMe = async (req: Request, res: Response) => {
+  const user = (req as any).user
+  if (!user) {
+    res.status(401).json({ message: 'Unauthorized' })
+    return
+  }
+
+  res.status(200).json(user)
+}
+
 const createUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body
   if (!name || !email || !password) {
@@ -38,4 +48,4 @@ const deleteUserById = async (req: Request, res: Response) => {
   }
 }
 
-export default { getUsers, getUserById, createUser, deleteUserById }
+export default { getUsers, getMe, getUserById, createUser, deleteUserById }

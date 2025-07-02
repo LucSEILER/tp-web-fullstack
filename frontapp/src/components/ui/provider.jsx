@@ -16,11 +16,8 @@ const config = defineConfig({
         red: "#EE0F0F",
         primary: "#2C2C2C",
         buttonPrimary: "#AD3215",
-      },
-    },
-    semanticTokens: {
-      colors: {
-        danger: { value: "{colors.red}" },
+        textPrimary: "#D5D8E8",
+        textLink: "#AD3215",
       },
     },
     keyframes: {
