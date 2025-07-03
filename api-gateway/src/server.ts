@@ -7,7 +7,7 @@ import { ROUTES } from './routes'
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT ? parseInt(process.env.PORT) : 4000
+const port = 4000
 
 app.use(
   cors({

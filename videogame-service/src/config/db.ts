@@ -6,7 +6,7 @@ import path from 'path'
 dotenv.config()
 
 const pool = new Pool({
-  host: process.env.USER_DB_CONTAINER_NAME || 'videogame_pgdb',
+  host: process.env.VIDEOGAME_DB_CONTAINER_NAME || 'videogame_pgdb',
   database: process.env.DB_NAME || 'gameradar_videogames',
   password: process.env.DB_PASSWORD,
   user: process.env.DB_USERNAME,

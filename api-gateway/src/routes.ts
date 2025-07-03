@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 interface Route {
   url: string
   auth: boolean
@@ -21,7 +25,7 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://user_service:5000',
+      target: `http://${process.env.USER_SERVICE_NAME}:5000`,
       changeOrigin: true,
     },
   },
@@ -30,7 +34,7 @@ const ROUTES: Route[] = [
     auth: false,
     creditCheck: false,
     proxy: {
-      target: 'http://videogame_service:7000',
+      target: `http://${process.env.VIDEOGAME_SERVICE_NAME}:7000`,
       changeOrigin: true,
     },
   },
