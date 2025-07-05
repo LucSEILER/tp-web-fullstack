@@ -60,9 +60,13 @@ Please be sure to have the following packages installed :
 
 ---
 
-### Step 2 - How to start
+### Step 2 - Setup environments
 
-When you are in the root directory, execute the following script
+Go on all the folders, and create a ```.env``` file. Then copy all the content from ```.env.template``` in it.
+
+### Step 3 - How to start
+
+After creating all the .env files, return in the root directory, then execute the following script :
 
 ```bash
 start.bat
@@ -70,9 +74,13 @@ start.bat
 
 Then you can access the API Gateway with the port [4000](http//localhost:4000).
 
-You have to access to **/auth** to access the user-service, and **/videogame** to access the videogame-service.
+You have to access to **/users** to access the user-service, and **/videogame** to access the videogame-service.
 
-### Step 3 (If network problem)
+The frontapp can be reached going [here](http//localhost:4000).
+
+After that, you can stop all the Docker containers using the ```stop.bat``` script.
+
+### Step 4 (If network problem)
 
 If the shared Docker network doesn’t exist, create it manually:
 
