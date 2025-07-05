@@ -19,4 +19,9 @@ cd videogame-service
 docker compose up -d --build
 cd ..
 
+echo Starting Frontend...
+cd frontapp
+docker compose up -d --build
+cd ..
+
 echo All services started!
