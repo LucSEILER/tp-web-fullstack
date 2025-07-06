@@ -72,11 +72,11 @@ After creating all the .env files, return in the root directory, then execute th
 start.bat
 ```
 
-Then you can access the API Gateway with the port [4000](http//localhost:4000).
+Then you can access the API Gateway goint to http://localhost:4000.
 
 You have to access to **/users** to access the user-service, and **/videogame** to access the videogame-service.
 
-The frontapp can be reached going [here](http//localhost:4000).
+The frontapp can be reached going to http://localhost:3000.
 
 After that, you can stop all the Docker containers using the ```stop.bat``` script.
 
